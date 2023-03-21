@@ -1,5 +1,17 @@
 # BTP Notebooks
 
+## Starting a Jupyter session
+1. Launch an Anaconda Prompt
+2. `cd` into the `dcm-btp-notebooks` directory
+3. Run the command `jupyter notebook`
+4. A new tab should open in your browser listing the contents of the `dcm-btp-notebooks` directory
+
+## Create an empty notebook
+1. Once a Jupyter session is running, use the `New` drop-down and select `Python 3`
+2. Give the notebook a name
+3. Open the `file` menu and choose `Save and Checkpoint`
+4. Start adding content!
+
 ## Datasets
 
 By the People. (2021). *Transcription datasets from Susan B. Anthony Papers, Manuscript Division.* (LCCN 2020445591, Version v2) [Data set]. Library of Congress. [https://www.loc.gov/item/2020445591/]()
