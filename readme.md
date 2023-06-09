@@ -1,7 +1,47 @@
 # BTP Notebooks
 
+## Dependencies and prerequisites
+This repo contains Jupyter Notebooks and therefore requires `jupyter` to be installed before launching a Jupyter session.
+
+### Prerequisites
+1. If you are using Anaconda Python, `jupyter` should already be installed.
+2. If you are using a different Python distribution, install `jupyter` with `pip`:
+```
+pip install notebook
+```
+
+### Dependencies
+1. The following libraries are required:
+- `pandas` *Anaconda Default
+- `re` *Python Standard Library
+- `ast` *Python Standard Library
+- `matplotlib` *Anaconda Default
+- `numpy` *Anaconda Default
+- `collections` *Python Standard Library
+- `operator` *Python Standard Library
+- `spacy`
+2. If you are using Anaconda Python, all libraries except for `spacy` should already be installed. Install `spacy` using the following:
+```
+pip install -U pip setuptools wheel
+pip install -U spacy
+python -m spacy download en_core_web_lg
+```
+> Note: Do not use `pip install --user` with Anaconda.
+
+3. For other Python installations, you will need to install `pandas`, `matplotlib`, and `numpy`, unless you have previously installed these. You can install them with:
+```
+pip install pandas matplotlib numpy
+```
+Then, install `spacy`:
+```
+pip install -U pip setuptools wheel
+pip install -U spacy
+python -m spacy download en_core_web_lg
+```
+
+
 ## Starting a Jupyter session
-1. Launch an Anaconda Prompt
+1. Launch an Anaconda Prompt (or whatever shell you use to run Python)
 2. `cd` into the `dcm-btp-notebooks` directory
 3. Run the command `jupyter notebook`
 4. A new tab should open in your browser listing the contents of the `dcm-btp-notebooks` directory
