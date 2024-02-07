@@ -19,3 +19,7 @@ venv.bak/
 **/*.ipynb_checkpoints/
 .ipynb_checkpoints
 */.ipynb_checkpoints/*
+_build/
+
+# Cached data
+outputs/*.pkl

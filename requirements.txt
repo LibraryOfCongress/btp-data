@@ -1,0 +1,19 @@
+#
+####### requirements.txt #######
+#
+# Run: pip install -r requirements.txt
+
+# For building Jupyter notebooks
+jupyter-book
+
+# For printing charts and graphs
+numpy
+matplotlib
+
+# For printing data tables
+pandas
+
+# For NLP
+spacy>=3.7.2,<3.8.0
+en_core_web_lg @ https://github.com/explosion/spacy-models/releases/download/en_core_web_lg-3.7.1/en_core_web_lg-3.7.1-py3-none-any.whl
+

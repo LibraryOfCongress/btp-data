@@ -1,0 +1,7 @@
+format: jb-book
+root: 01_introduction.ipynb
+chapters:
+- file: 02_definitions.ipynb
+- file: 03_tokenization.ipynb
+- file: 04_processing.ipynb
+- file: 05_visualization.ipynb
