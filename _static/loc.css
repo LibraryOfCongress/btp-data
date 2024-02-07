@@ -63,6 +63,10 @@ nav.bd-links li > a:hover,
     display: none;
 }
 
+div.cell_output table {
+    font-size: 0.8em;
+}
+
 .loc-header {
     position: fixed;
     top: 0;
