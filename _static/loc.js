@@ -70,6 +70,29 @@ function locMain() {
             lmain.setAttribute('aria-label', 'Primary');
         });
     }
+
+    // inject alt text for generated images if captions are available
+    // HACK: captions are <p> elements with <em> text inside of it. They should immediately follow the output cell that contains an image 
+    const images = document.querySelectorAll('#article-main .cell_output img');
+    if (images) {
+        images.forEach((image) => {
+            const cell = image.closest('.cell');
+            // check to see if the next sibling is a paragraph tag
+            const {nextElementSibling} = cell;
+            const {nodeName} = nextElementSibling;
+            if (nodeName === "P") {
+                // check to see if there is an emphasis inside of it
+                const em = nextElementSibling.getElementsByTagName("em");
+                if (em && em.length > 0) {
+                    const {innerText} = em[0];
+                    // set the alt text of the image with the emphasized text
+                    image.setAttribute('alt', innerText);
+                    // remove the source element
+                    nextElementSibling.remove();
+                }
+            }
+        });
+    }
 }
 
 document.addEventListener('DOMContentLoaded', (event) => {
