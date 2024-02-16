@@ -3,8 +3,9 @@
 #
 # Run: pip install -r requirements.txt
 
-# For building Jupyter notebooks
+# For running and building Jupyter notebooks
 jupyter-book
+jupyter
 
 # For printing charts and graphs
 numpy

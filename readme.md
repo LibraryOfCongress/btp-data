@@ -1,4 +1,4 @@
-# By the People Notebooks
+# Processing and Visualizing By the People Transcription Data
 ---
 ## About the data
 This tutorial provides an example of data processing and visualization using transcription data from By the People, the Library of Congress's crowdsourced transcriptioning program. By the People invites anyone to contribute to the Library of Congress as a virtual volunteer by transcribing and reviewing digital images of texts to enhance Library of Congress digital collections. The Library of Congress thanks all By the People volunteers for sharing their time and knowledge with us to make this tutorial possible. 
