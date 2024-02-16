@@ -1,4 +1,4 @@
-# BTP Notebooks
+# By the People Notebooks
 ---
 ## About the data
 This tutorial provides an example of data processing and visualization using transcription data from By the People, the Library of Congress's crowdsourced transcriptioning program. By the People invites anyone to contribute to the Library of Congress as a virtual volunteer by transcribing and reviewing digital images of texts to enhance Library of Congress digital collections. The Library of Congress thanks all By the People volunteers for sharing their time and knowledge with us to make this tutorial possible. 
@@ -26,21 +26,21 @@ By the People datasets contain the following fields:
 
 ---
 
-## About the notebook
-This tutorial is organized in a single notebook in two sections: `Data-Processing` and `Grouped-Bar-Graph`. The first section cleans and processes transcriptions from the four datasets using [Pandas](https://pandas.pydata.org/) and the [spaCy](https://spacy.io/) Natural Language Processing library. This code tokenizes the transcriptions, breaking the strings of text into tokens (words) that will be further analyzed. It then identifies the lemma, or root, for each word. For example, the lemma of "voted" is "vote", and the lemma of "women" is "woman". The code next iterates over each token to produce a list of lemmas from the original transcriptions that excludes stop words, punctuation, numbers, and words that volunteers were unable to fully transcribe, which are designated with "?". Stop words are commonly used words, such as "the", "a", or "is".
+## About the notebooks
+This tutorial first cleans and processes transcriptions from the four datasets using [Pandas](https://pandas.pydata.org/) and the [spaCy](https://spacy.io/) Natural Language Processing library. This code tokenizes the transcriptions, breaking the strings of text into tokens (words) that will be further analyzed. It then identifies the lemma, or root, for each word. For example, the lemma of "voted" is "vote", and the lemma of "women" is "woman". The code next iterates over each token to produce a list of lemmas from the original transcriptions that excludes stop words, punctuation, numbers, and words that volunteers were unable to fully transcribe, which are designated with "?". Stop words are commonly used words, such as "the", "a", or "is".
 
-The second section creates two visualizations from the cleaned data using the [Matplotlib](https://matplotlib.org/) and [Numpy](https://numpy.org/) Python libraries. The first is a combined bar graph showing the five most used words for each of the four datasets. The second is a focused look at the "Speeches" series from the Susan B. Anthony Papers. With data coming from a [typed inventory of speeches](http://hdl.loc.gov/loc.mss/ms997009.mss11049.036) found in the collection, this code groups Anthony's speeches by year, and then plots the usage of the top five words in her speeches by year.
+The tutorial then creates two visualizations from the cleaned data using the [Matplotlib](https://matplotlib.org/) and [Numpy](https://numpy.org/) Python libraries. The first is a combined bar graph showing the five most used words for each of the four datasets. The second is a focused look at the "Speeches" series from the Susan B. Anthony Papers. With data coming from a [typed inventory of speeches](http://hdl.loc.gov/loc.mss/ms997009.mss11049.036) found in the collection, this code groups Anthony's speeches by year, and then plots the usage of the top five words in her speeches by year.
 
 ---
 
-## Running the notebook
+## Running the notebooks
 In order to run a Jupyter notebook, navigate to the directory that contains the notebook files using `cd /path/to/dcm-btp-notebooks`, then run the command `jupyter notebook`. This will launch the Notebook Dashboard in an Internet browser.
 
-In order to properly run this notebook, make sure that the appropriate Python libraries are installed. The dataset files are already included in this tutorial in the `data` directory (along with each dataset’s README), which can be seen in the Notebook Dashboard.
+In order to properly run these notebooks, make sure that the appropriate Python libraries are installed. The dataset files are already included in this tutorial in the `data` directory (along with each dataset’s README), which can be seen in the Notebook Dashboard.
 
-The code sections in the tutorial must be run in order. `Data-Processing` must be run before `Grouped-Bar-Graph` because `Grouped-Bar-Graph` relies on cleaned data created in the `Data-Processing` secriont. The entire notebook can be run by clicking `Run` in the menu bar. Individual cells can be run by clicking into the cell, then hitting `Shift + Enter`.
+An entire notebook can be run by clicking `Run` in the menu bar. Individual cells can be run by clicking into the cell, then hitting `Shift + Enter`. The notebooks in this tutorial must be run in order, from 2 to 5.
 
-`Data-Processing` contains optional code that can be run to print results to the notebook. This helps show what the code is doing at each step. These cells have "Optional:" in the title. Remove `#` from the code to un-comment and run those lines of code.
+These notebooks contain optional code that can be run to print results to the notebook. This helps show what the code is doing at each step. These cells have “Optional:” in the title. Add `#` to the beginning of a line of code to comment out the lines you do not want to run.
 
 The outputs from `Data-Processing` will be saved to the `outputs` directory, which can be seen in the Notebook Dashboard.
 
@@ -97,10 +97,10 @@ python -m spacy download en_core_web_lg
 4. Start adding content!
 
 ## Authorship and use
-These notebooks were created by Dave Durden and Madeline Goebel, Digital Collection Specialists at the Library of Congress. They are made available under the [Creative Commons Attribution license](https://creativecommons.org/licenses/by/4.0/legalcode).
+These notebooks were created by Dave Durden and Madeline Goebel, Digital Collection Specialists at the Library of Congress. They are marked with a [CC0 1.0 Universal](https://creativecommons.org/publicdomain/zero/1.0/) public domain dedication.
 
 All contributions to the By the People application are released into the public domain as they are created. Anyone can use and re-use the datasets in any way they want.
 
 ----
 
-<a rel="license" href="http://creativecommons.org/licenses/by/4.0/"><img alt="Creative Commons License" style="border-width:0" src="https://i.creativecommons.org/l/by/4.0/88x31.png" /></a><br />This work is licensed under a <a rel="license" href="http://creativecommons.org/licenses/by/4.0/">Creative Commons Attribution 4.0 International License</a>.
+<p xmlns:cc="http://creativecommons.org/ns#" xmlns:dct="http://purl.org/dc/terms/"><a property="dct:title" rel="cc:attributionURL" href="https://github.com/LibraryOfCongress/btp-data/">Processing and Visualizing By the People Transcription Data</a> by <span property="cc:attributionName">David Durden and Madeline Goebel</span> is marked with <a href="http://creativecommons.org/publicdomain/zero/1.0?ref=chooser-v1" target="_blank" rel="license noopener noreferrer" style="display:inline-block;">CC0 1.0<img style="height:22px!important;margin-left:3px;vertical-align:text-bottom;" src="https://mirrors.creativecommons.org/presskit/icons/cc.svg?ref=chooser-v1"><img style="height:22px!important;margin-left:3px;vertical-align:text-bottom;" src="https://mirrors.creativecommons.org/presskit/icons/zero.svg?ref=chooser-v1"></a></p>
