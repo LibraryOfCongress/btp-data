@@ -59,7 +59,8 @@ nav.bd-links li > a:hover,
     padding-top: 40px;
 }
 
-.cell_output .output.stderr {
+.cell_output .output.stderr,
+.cell_output .output.traceback {
     display: none;
 }
 
