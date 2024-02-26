@@ -23,3 +23,10 @@ html:
                 <li><a href="https://ask.loc.gov/crowd">Contact</a></li>
             </ul>
         </footer>
+
+# The following values assume that you are executing the notebooks yourself before you build
+# Re-execution of notebooks are turned off since these scripts take a very long time to (re-)build
+# Look here for more options: https://jupyterbook.org/en/stable/content/execute.html
+execute:
+  execute_notebooks: 'off'
+  stderr_output: remove
