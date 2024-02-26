@@ -1,0 +1,2065 @@
+
+
+<!DOCTYPE html>
+
+
+<html lang="en" >
+
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="generator" content="Docutils 0.18.1: http://docutils.sourceforge.net/" />
+
+    <title>Text tokenization &#8212; Processing and Visualizing By the People Transcription Data</title>
+  
+  
+  
+  <script data-cfasync="false">
+    document.documentElement.dataset.mode = localStorage.getItem("mode") || "";
+    document.documentElement.dataset.theme = localStorage.getItem("theme") || "light";
+  </script>
+  
+  <!-- Loaded before other Sphinx assets -->
+  <link href="_static/styles/theme.css?digest=ac02cc09edc035673794" rel="stylesheet" />
+<link href="_static/styles/bootstrap.css?digest=ac02cc09edc035673794" rel="stylesheet" />
+<link href="_static/styles/pydata-sphinx-theme.css?digest=ac02cc09edc035673794" rel="stylesheet" />
+
+  
+  <link href="_static/vendor/fontawesome/6.1.2/css/all.min.css?digest=ac02cc09edc035673794" rel="stylesheet" />
+  <link rel="preload" as="font" type="font/woff2" crossorigin href="_static/vendor/fontawesome/6.1.2/webfonts/fa-solid-900.woff2" />
+<link rel="preload" as="font" type="font/woff2" crossorigin href="_static/vendor/fontawesome/6.1.2/webfonts/fa-brands-400.woff2" />
+<link rel="preload" as="font" type="font/woff2" crossorigin href="_static/vendor/fontawesome/6.1.2/webfonts/fa-regular-400.woff2" />
+
+    <link rel="stylesheet" type="text/css" href="_static/pygments.css" />
+    <link rel="stylesheet" href="_static/styles/sphinx-book-theme.css?digest=14f4ca6b54d191a8c7657f6c759bf11a5fb86285" type="text/css" />
+    <link rel="stylesheet" type="text/css" href="_static/togglebutton.css" />
+    <link rel="stylesheet" type="text/css" href="_static/copybutton.css" />
+    <link rel="stylesheet" type="text/css" href="_static/mystnb.4510f1fc1dee50b3e5859aac5469c37c29e427902b24a333a5f9fcb2f0b3ac41.css" />
+    <link rel="stylesheet" type="text/css" href="_static/sphinx-thebe.css" />
+    <link rel="stylesheet" type="text/css" href="_static/loc.css" />
+    <link rel="stylesheet" type="text/css" href="_static/design-style.4045f2051d55cab465a707391d5b2007.min.css" />
+  
+  <!-- Pre-loaded scripts that we'll load fully later -->
+  <link rel="preload" as="script" href="_static/scripts/bootstrap.js?digest=ac02cc09edc035673794" />
+<link rel="preload" as="script" href="_static/scripts/pydata-sphinx-theme.js?digest=ac02cc09edc035673794" />
+  <script src="_static/vendor/fontawesome/6.1.2/js/all.min.js?digest=ac02cc09edc035673794"></script>
+
+    <script data-url_root="./" id="documentation_options" src="_static/documentation_options.js"></script>
+    <script src="_static/jquery.js"></script>
+    <script src="_static/underscore.js"></script>
+    <script src="_static/_sphinx_javascript_frameworks_compat.js"></script>
+    <script src="_static/doctools.js"></script>
+    <script src="_static/clipboard.min.js"></script>
+    <script src="_static/copybutton.js"></script>
+    <script src="_static/scripts/sphinx-book-theme.js?digest=5a5c038af52cf7bc1a1ec88eea08e6366ee68824"></script>
+    <script>let toggleHintShow = 'Click to show';</script>
+    <script>let toggleHintHide = 'Click to hide';</script>
+    <script>let toggleOpenOnPrint = 'true';</script>
+    <script src="_static/togglebutton.js"></script>
+    <script src="_static/loc.js"></script>
+    <script>var togglebuttonSelector = '.toggle, .admonition.dropdown';</script>
+    <script src="_static/design-tabs.js"></script>
+    <script>const THEBE_JS_URL = "https://unpkg.com/thebe@0.8.2/lib/index.js"
+const thebe_selector = ".thebe,.cell"
+const thebe_selector_input = "pre"
+const thebe_selector_output = ".output, .cell_output"
+</script>
+    <script async="async" src="_static/sphinx-thebe.js"></script>
+    <script>DOCUMENTATION_OPTIONS.pagename = '03_tokenization';</script>
+    <link rel="index" title="Index" href="genindex.html" />
+    <link rel="search" title="Search" href="search.html" />
+    <link rel="next" title="Data Processing" href="04_processing.html" />
+    <link rel="prev" title="Imports, definitions, and data" href="02_definitions.html" />
+  <meta name="viewport" content="width=device-width, initial-scale=1"/>
+  <meta name="docsearch:language" content="en"/>
+  </head>
+  
+  
+  <body data-bs-spy="scroll" data-bs-target=".bd-toc-nav" data-offset="180" data-bs-root-margin="0px 0px -60%" data-default-mode="">
+
+  
+  
+  <a class="skip-link" href="#main-content">Skip to main content</a>
+  
+  <div id="pst-scroll-pixel-helper"></div>
+
+  
+  <button type="button" class="btn rounded-pill" id="pst-back-to-top">
+    <i class="fa-solid fa-arrow-up"></i>
+    Back to top
+  </button>
+
+  
+  <input type="checkbox"
+          class="sidebar-toggle"
+          name="__primary"
+          id="__primary"/>
+  <label class="overlay overlay-primary" for="__primary"></label>
+  
+  <input type="checkbox"
+          class="sidebar-toggle"
+          name="__secondary"
+          id="__secondary"/>
+  <label class="overlay overlay-secondary" for="__secondary"></label>
+  
+  <div class="search-button__wrapper">
+    <div class="search-button__overlay"></div>
+    <div class="search-button__search-container">
+<form class="bd-search d-flex align-items-center"
+      action="search.html"
+      method="get">
+  <i class="fa-solid fa-magnifying-glass"></i>
+  <input type="search"
+         class="form-control"
+         name="q"
+         id="search-input"
+         placeholder="Search this book..."
+         aria-label="Search this book..."
+         autocomplete="off"
+         autocorrect="off"
+         autocapitalize="off"
+         spellcheck="false"/>
+  <span class="search-button__kbd-shortcut"><kbd class="kbd-shortcut__modifier">Ctrl</kbd>+<kbd>K</kbd></span>
+</form></div>
+  </div>
+  
+    <nav class="bd-header navbar navbar-expand-lg bd-navbar">
+    </nav>
+  
+  <div class="bd-container">
+    <div class="bd-container__inner bd-page-width">
+      
+      <div class="bd-sidebar-primary bd-sidebar">
+        
+
+  
+  <div class="sidebar-header-items sidebar-primary__section">
+    
+    
+    
+    
+  </div>
+  
+    <div class="sidebar-primary-items__start sidebar-primary__section">
+        <div class="sidebar-primary-item">
+  
+
+<a class="navbar-brand logo" href="01_introduction.html">
+  
+  
+  
+  
+  
+    <p class="title logo__title">Processing and Visualizing By the People Transcription Data</p>
+  
+</a></div>
+        <div class="sidebar-primary-item"><nav class="bd-links" id="bd-docs-nav" aria-label="Main">
+    <div class="bd-toc-item navbar-nav active">
+        
+        <ul class="nav bd-sidenav bd-sidenav__home-link">
+            <li class="toctree-l1">
+                <a class="reference internal" href="01_introduction.html">
+                    Introduction
+                </a>
+            </li>
+        </ul>
+        <ul class="current nav bd-sidenav">
+<li class="toctree-l1"><a class="reference internal" href="02_definitions.html">Imports, definitions, and data</a></li>
+<li class="toctree-l1 current active"><a class="current reference internal" href="#">Text tokenization</a></li>
+<li class="toctree-l1"><a class="reference internal" href="04_processing.html">Data Processing</a></li>
+<li class="toctree-l1"><a class="reference internal" href="05_visualization.html">Visualizing the data</a></li>
+</ul>
+
+    </div>
+</nav></div>
+    </div>
+  
+  
+  <div class="sidebar-primary-items__end sidebar-primary__section">
+  </div>
+  
+  <div id="rtd-footer-container"></div>
+
+
+      </div>
+      
+      <main id="main-content" class="bd-main">
+        
+        
+
+<div class="sbt-scroll-pixel-helper"></div>
+
+          <div class="bd-content">
+            <div class="bd-article-container">
+              
+              <div class="bd-header-article">
+<div class="header-article-items header-article__inner">
+  
+    <div class="header-article-items__start">
+      
+        <div class="header-article-item"><label class="sidebar-toggle primary-toggle btn btn-sm" for="__primary" title="Toggle primary sidebar" data-bs-placement="bottom" data-bs-toggle="tooltip">
+  <span class="fa-solid fa-bars"></span>
+</label></div>
+      
+    </div>
+  
+  
+    <div class="header-article-items__end">
+      
+        <div class="header-article-item">
+
+<div class="article-header-buttons">
+
+
+
+
+
+<div class="dropdown dropdown-download-buttons">
+  <button class="btn dropdown-toggle" type="button" data-bs-toggle="dropdown" aria-expanded="false" aria-label="Download this page">
+    <i class="fas fa-download"></i>
+  </button>
+  <ul class="dropdown-menu">
+      
+      
+      
+      <li><a href="_sources/03_tokenization.ipynb" target="_blank"
+   class="btn btn-sm btn-download-source-button dropdown-item"
+   title="Download source file"
+   data-bs-placement="left" data-bs-toggle="tooltip"
+>
+  
+
+<span class="btn__icon-container">
+  <i class="fas fa-file"></i>
+  </span>
+<span class="btn__text-container">.ipynb</span>
+</a>
+</li>
+      
+      
+      
+      
+      <li>
+<button onclick="window.print()"
+  class="btn btn-sm btn-download-pdf-button dropdown-item"
+  title="Print to PDF"
+  data-bs-placement="left" data-bs-toggle="tooltip"
+>
+  
+
+<span class="btn__icon-container">
+  <i class="fas fa-file-pdf"></i>
+  </span>
+<span class="btn__text-container">.pdf</span>
+</button>
+</li>
+      
+  </ul>
+</div>
+
+
+
+
+<button onclick="toggleFullScreen()"
+  class="btn btn-sm btn-fullscreen-button"
+  title="Fullscreen mode"
+  data-bs-placement="bottom" data-bs-toggle="tooltip"
+>
+  
+
+<span class="btn__icon-container">
+  <i class="fas fa-expand"></i>
+  </span>
+
+</button>
+
+
+<script>
+document.write(`
+  <button class="btn btn-sm navbar-btn theme-switch-button" title="light/dark" aria-label="light/dark" data-bs-placement="bottom" data-bs-toggle="tooltip">
+    <span class="theme-switch nav-link" data-mode="light"><i class="fa-solid fa-sun fa-lg"></i></span>
+    <span class="theme-switch nav-link" data-mode="dark"><i class="fa-solid fa-moon fa-lg"></i></span>
+    <span class="theme-switch nav-link" data-mode="auto"><i class="fa-solid fa-circle-half-stroke fa-lg"></i></span>
+  </button>
+`);
+</script>
+
+<script>
+document.write(`
+  <button class="btn btn-sm navbar-btn search-button search-button__button" title="Search" aria-label="Search" data-bs-placement="bottom" data-bs-toggle="tooltip">
+    <i class="fa-solid fa-magnifying-glass fa-lg"></i>
+  </button>
+`);
+</script>
+<label class="sidebar-toggle secondary-toggle btn btn-sm" for="__secondary"title="Toggle secondary sidebar" data-bs-placement="bottom" data-bs-toggle="tooltip">
+    <span class="fa-solid fa-list"></span>
+</label>
+</div></div>
+      
+    </div>
+  
+</div>
+</div>
+              
+              
+
+<div id="jb-print-docs-body" class="onlyprint">
+    <h1>Text tokenization</h1>
+    <!-- Table of contents -->
+    <div id="print-main-content">
+        <div id="jb-print-toc">
+            
+            <div>
+                <h2> Contents </h2>
+            </div>
+            <nav aria-label="Page">
+                <ul class="visible nav section-nav flex-column">
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#load-each-transcription-dataset-into-a-data-frame">Load each transcription dataset into a data frame</a><ul class="nav section-nav flex-column">
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#optional-preview-the-first-five-lines-of-a-loaded-dataset">Optional: Preview the first five lines of a loaded dataset</a><ul class="nav section-nav flex-column">
+<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#anthony">Anthony</a></li>
+<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#catt">Catt</a></li>
+<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#stanton">Stanton</a></li>
+<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#terrell">Terrell</a></li>
+</ul>
+</li>
+</ul>
+</li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#create-a-new-column-containing-the-output-of-the-tokens-function">Create a new column containing the output of the <code class="docutils literal notranslate"><span class="pre">tokens</span></code> function</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#create-a-new-column-containing-the-output-of-the-entities-function">Create a new column containing the output of the <code class="docutils literal notranslate"><span class="pre">entities</span></code> function</a><ul class="nav section-nav flex-column">
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#optional-preview-the-results-of-the-entities-functions-for-the-first-row-of-a-dataset">Optional: Preview the results of the <code class="docutils literal notranslate"><span class="pre">entities</span></code> functions for the first row of a dataset</a><ul class="nav section-nav flex-column">
+<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#id1">Anthony</a></li>
+<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#id2">Catt</a></li>
+<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#id3">Stanton</a></li>
+<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#id4">Terrell</a></li>
+</ul>
+</li>
+</ul>
+</li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#run-the-separate-text-function-to-isolate-tokens-by-category">Run the <code class="docutils literal notranslate"><span class="pre">separate_text</span></code> function to isolate tokens by category</a><ul class="nav section-nav flex-column">
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#cache-the-result-for-next-steps">Cache the result for next steps</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#optional-preview-the-results-for-the-first-six-rows-of-the-updated-data-frame">Optional: Preview the results for the first six rows of the updated data frame</a><ul class="nav section-nav flex-column">
+<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#id5">Anthony</a></li>
+<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#id6">Catt</a></li>
+<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#id7">Stanton</a></li>
+<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#id8">Terrell</a></li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+            </nav>
+        </div>
+    </div>
+</div>
+
+              
+                
+<div id="searchbox"></div>
+                <article class="bd-article" role="main">
+                  
+  <section class="tex2jax_ignore mathjax_ignore" id="text-tokenization">
+<h1>Text tokenization<a class="headerlink" href="#text-tokenization" title="Permalink to this heading">#</a></h1>
+<p>This section contains code that will tokenize the transcription data and add new columns to the data frames for each transcription dataset.</p>
+<p>First, we run the definitions step from the previous section.</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="o">%</span><span class="k">run</span> 02_definitions.ipynb
+</pre></div>
+</div>
+</div>
+</div>
+<section id="load-each-transcription-dataset-into-a-data-frame">
+<h2>Load each transcription dataset into a data frame<a class="headerlink" href="#load-each-transcription-dataset-into-a-data-frame" title="Permalink to this heading">#</a></h2>
+<p>The <code class="docutils literal notranslate"><span class="pre">load_csv</span></code> function will read the data from each path constant and store data in a Pandas data frame.</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">a</span> <span class="o">=</span> <span class="n">load_csv</span><span class="p">(</span><span class="n">ANTHONY</span><span class="p">)</span>
+<span class="n">c</span> <span class="o">=</span> <span class="n">load_csv</span><span class="p">(</span><span class="n">CATT</span><span class="p">)</span>
+<span class="n">s</span> <span class="o">=</span> <span class="n">load_csv</span><span class="p">(</span><span class="n">STANTON</span><span class="p">)</span>
+<span class="n">t</span> <span class="o">=</span> <span class="n">load_csv</span><span class="p">(</span><span class="n">TERRELL</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+</div>
+<section id="optional-preview-the-first-five-lines-of-a-loaded-dataset">
+<h3>Optional: Preview the first five lines of a loaded dataset<a class="headerlink" href="#optional-preview-the-first-five-lines-of-a-loaded-dataset" title="Permalink to this heading">#</a></h3>
+<section id="anthony">
+<h4>Anthony<a class="headerlink" href="#anthony" title="Permalink to this heading">#</a></h4>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">a</span><span class="o">.</span><span class="n">head</span><span class="p">()</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output text_html"><div>
+<style scoped>
+    .dataframe tbody tr th:only-of-type {
+        vertical-align: middle;
+    }
+
+    .dataframe tbody tr th {
+        vertical-align: top;
+    }
+
+    .dataframe thead th {
+        text-align: right;
+    }
+</style>
+<table border="1" class="dataframe">
+  <thead>
+    <tr style="text-align: right;">
+      <th></th>
+      <th>Campaign</th>
+      <th>Project</th>
+      <th>Item</th>
+      <th>ItemId</th>
+      <th>Asset</th>
+      <th>AssetId</th>
+      <th>AssetStatus</th>
+      <th>DownloadUrl</th>
+      <th>Transcription</th>
+      <th>Tags</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <th>0</th>
+      <td>Susan B. Anthony Papers</td>
+      <td>Speeches and other writings</td>
+      <td>Susan B. Anthony Papers: Speeches and Writings...</td>
+      <td>mss11049038</td>
+      <td>mss11049038-1</td>
+      <td>179295</td>
+      <td>completed</td>
+      <td>http://tile.loc.gov/image-services/iiif/servic...</td>
+      <td>Susan B. Anthony      SPEECHES AND WRITINGS FI...</td>
+      <td>May 1852</td>
+    </tr>
+    <tr>
+      <th>1</th>
+      <td>Susan B. Anthony Papers</td>
+      <td>Speeches and other writings</td>
+      <td>Susan B. Anthony Papers: Speeches and Writings...</td>
+      <td>mss11049038</td>
+      <td>mss11049038-2</td>
+      <td>179296</td>
+      <td>completed</td>
+      <td>http://tile.loc.gov/image-services/iiif/servic...</td>
+      <td>/52\r\nS.B.A-\r\n\r\nDelivered for the\r\nFirs...</td>
+      <td>NaN</td>
+    </tr>
+    <tr>
+      <th>2</th>
+      <td>Susan B. Anthony Papers</td>
+      <td>Speeches and other writings</td>
+      <td>Susan B. Anthony Papers: Speeches and Writings...</td>
+      <td>mss11049038</td>
+      <td>mss11049038-3</td>
+      <td>179297</td>
+      <td>completed</td>
+      <td>http://tile.loc.gov/image-services/iiif/servic...</td>
+      <td>will the best &amp; wisest of mothers continue\r\n...</td>
+      <td>temperance</td>
+    </tr>
+    <tr>
+      <th>3</th>
+      <td>Susan B. Anthony Papers</td>
+      <td>Speeches and other writings</td>
+      <td>Susan B. Anthony Papers: Speeches and Writings...</td>
+      <td>mss11049038</td>
+      <td>mss11049038-4</td>
+      <td>179298</td>
+      <td>completed</td>
+      <td>http://tile.loc.gov/image-services/iiif/servic...</td>
+      <td>[Mind] the youthful mind.  Of how\r\nlittle av...</td>
+      <td>temperance</td>
+    </tr>
+    <tr>
+      <th>4</th>
+      <td>Susan B. Anthony Papers</td>
+      <td>Speeches and other writings</td>
+      <td>Susan B. Anthony Papers: Speeches and Writings...</td>
+      <td>mss11049038</td>
+      <td>mss11049038-5</td>
+      <td>179299</td>
+      <td>completed</td>
+      <td>http://tile.loc.gov/image-services/iiif/servic...</td>
+      <td>x\r\nWhile we labor to reclaim one generation ...</td>
+      <td>temperance</td>
+    </tr>
+  </tbody>
+</table>
+</div></div></div>
+</div>
+</section>
+<section id="catt">
+<h4>Catt<a class="headerlink" href="#catt" title="Permalink to this heading">#</a></h4>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">c</span><span class="o">.</span><span class="n">head</span><span class="p">()</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output text_html"><div>
+<style scoped>
+    .dataframe tbody tr th:only-of-type {
+        vertical-align: middle;
+    }
+
+    .dataframe tbody tr th {
+        vertical-align: top;
+    }
+
+    .dataframe thead th {
+        text-align: right;
+    }
+</style>
+<table border="1" class="dataframe">
+  <thead>
+    <tr style="text-align: right;">
+      <th></th>
+      <th>Campaign</th>
+      <th>Project</th>
+      <th>Item</th>
+      <th>ItemId</th>
+      <th>Asset</th>
+      <th>AssetId</th>
+      <th>AssetStatus</th>
+      <th>DownloadUrl</th>
+      <th>Transcription</th>
+      <th>Tags</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <th>0</th>
+      <td>Carrie Chapman Catt Papers</td>
+      <td>Speeches and articles</td>
+      <td>Carrie Chapman Catt Papers: Speech and Article...</td>
+      <td>mss154040385</td>
+      <td>mss154040385-1</td>
+      <td>189284</td>
+      <td>completed</td>
+      <td>http://tile.loc.gov/image-services/iiif/servic...</td>
+      <td>CATT, Carrie Chapman\r\nSPEECH, ARTICLE, BOOK ...</td>
+      <td>NaN</td>
+    </tr>
+    <tr>
+      <th>1</th>
+      <td>Carrie Chapman Catt Papers</td>
+      <td>Speeches and articles</td>
+      <td>Carrie Chapman Catt Papers: Speech and Article...</td>
+      <td>mss154040385</td>
+      <td>mss154040385-2</td>
+      <td>189285</td>
+      <td>completed</td>
+      <td>http://tile.loc.gov/image-services/iiif/servic...</td>
+      <td>-2-\r\nWe appeal in the name of our foremother...</td>
+      <td>NaN</td>
+    </tr>
+    <tr>
+      <th>2</th>
+      <td>Carrie Chapman Catt Papers</td>
+      <td>Speeches and articles</td>
+      <td>Carrie Chapman Catt Papers: Speech and Article...</td>
+      <td>mss154040385</td>
+      <td>mss154040385-3</td>
+      <td>189286</td>
+      <td>completed</td>
+      <td>http://tile.loc.gov/image-services/iiif/servic...</td>
+      <td>AN APPEAL FOR LIBERTY.    1915\r\n\r\nBy Carri...</td>
+      <td>NaN</td>
+    </tr>
+    <tr>
+      <th>3</th>
+      <td>Carrie Chapman Catt Papers</td>
+      <td>Speeches and articles</td>
+      <td>Carrie Chapman Catt Papers: Speech and Article...</td>
+      <td>mss154040386</td>
+      <td>mss154040386-1</td>
+      <td>189287</td>
+      <td>completed</td>
+      <td>http://tile.loc.gov/image-services/iiif/servic...</td>
+      <td>CATT, Carrie Chapman\r\nSPEECH, ARTICLE, BOOK ...</td>
+      <td>NaN</td>
+    </tr>
+    <tr>
+      <th>4</th>
+      <td>Carrie Chapman Catt Papers</td>
+      <td>Speeches and articles</td>
+      <td>Carrie Chapman Catt Papers: Speech and Article...</td>
+      <td>mss154040386</td>
+      <td>mss154040386-2</td>
+      <td>189288</td>
+      <td>completed</td>
+      <td>http://tile.loc.gov/image-services/iiif/servic...</td>
+      <td>The \r\nWoman Citizen\r\nA WEEKLY CHRONICLE OF...</td>
+      <td>NaN</td>
+    </tr>
+  </tbody>
+</table>
+</div></div></div>
+</div>
+</section>
+<section id="stanton">
+<h4>Stanton<a class="headerlink" href="#stanton" title="Permalink to this heading">#</a></h4>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">s</span><span class="o">.</span><span class="n">head</span><span class="p">()</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output text_html"><div>
+<style scoped>
+    .dataframe tbody tr th:only-of-type {
+        vertical-align: middle;
+    }
+
+    .dataframe tbody tr th {
+        vertical-align: top;
+    }
+
+    .dataframe thead th {
+        text-align: right;
+    }
+</style>
+<table border="1" class="dataframe">
+  <thead>
+    <tr style="text-align: right;">
+      <th></th>
+      <th>Campaign</th>
+      <th>Project</th>
+      <th>Item</th>
+      <th>ItemId</th>
+      <th>Asset</th>
+      <th>AssetId</th>
+      <th>AssetStatus</th>
+      <th>DownloadUrl</th>
+      <th>Transcription</th>
+      <th>Tags</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <th>0</th>
+      <td>Elizabeth Cady Stanton Papers</td>
+      <td>General correspondence</td>
+      <td>Elizabeth Cady Stanton Papers: General Corresp...</td>
+      <td>mss412100001</td>
+      <td>mss412100001-1</td>
+      <td>179712</td>
+      <td>completed</td>
+      <td>http://tile.loc.gov/image-services/iiif/servic...</td>
+      <td>Elizabeth Cady Stanton  GENERAL CORRESPONDENCE...</td>
+      <td>NaN</td>
+    </tr>
+    <tr>
+      <th>1</th>
+      <td>Elizabeth Cady Stanton Papers</td>
+      <td>General correspondence</td>
+      <td>Elizabeth Cady Stanton Papers: General Corresp...</td>
+      <td>mss412100001</td>
+      <td>mss412100001-2</td>
+      <td>179713</td>
+      <td>completed</td>
+      <td>http://tile.loc.gov/image-services/iiif/servic...</td>
+      <td>The following four letters are \r\nfrom Daniel...</td>
+      <td>Peter Smith; Daniel Cady; Judge Cady</td>
+    </tr>
+    <tr>
+      <th>2</th>
+      <td>Elizabeth Cady Stanton Papers</td>
+      <td>General correspondence</td>
+      <td>Elizabeth Cady Stanton Papers: General Corresp...</td>
+      <td>mss412100001</td>
+      <td>mss412100001-3</td>
+      <td>179714</td>
+      <td>completed</td>
+      <td>http://tile.loc.gov/image-services/iiif/servic...</td>
+      <td>22                                            ...</td>
+      <td>NaN</td>
+    </tr>
+    <tr>
+      <th>3</th>
+      <td>Elizabeth Cady Stanton Papers</td>
+      <td>General correspondence</td>
+      <td>Elizabeth Cady Stanton Papers: General Corresp...</td>
+      <td>mss412100001</td>
+      <td>mss412100001-4</td>
+      <td>179715</td>
+      <td>completed</td>
+      <td>http://tile.loc.gov/image-services/iiif/servic...</td>
+      <td>he could to make her respectable &amp; happy. That...</td>
+      <td>Peter Smith; Bonaparte</td>
+    </tr>
+    <tr>
+      <th>4</th>
+      <td>Elizabeth Cady Stanton Papers</td>
+      <td>General correspondence</td>
+      <td>Elizabeth Cady Stanton Papers: General Corresp...</td>
+      <td>mss412100001</td>
+      <td>mss412100001-5</td>
+      <td>179716</td>
+      <td>completed</td>
+      <td>http://tile.loc.gov/image-services/iiif/servic...</td>
+      <td>Johnstown 2 D     Paid 10\r\n\r\n\r\nPeter Smi...</td>
+      <td>Peter Smith</td>
+    </tr>
+  </tbody>
+</table>
+</div></div></div>
+</div>
+</section>
+<section id="terrell">
+<h4>Terrell<a class="headerlink" href="#terrell" title="Permalink to this heading">#</a></h4>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">t</span><span class="o">.</span><span class="n">head</span><span class="p">()</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output text_html"><div>
+<style scoped>
+    .dataframe tbody tr th:only-of-type {
+        vertical-align: middle;
+    }
+
+    .dataframe tbody tr th {
+        vertical-align: top;
+    }
+
+    .dataframe thead th {
+        text-align: right;
+    }
+</style>
+<table border="1" class="dataframe">
+  <thead>
+    <tr style="text-align: right;">
+      <th></th>
+      <th>Campaign</th>
+      <th>Project</th>
+      <th>Item</th>
+      <th>ItemId</th>
+      <th>Asset</th>
+      <th>AssetId</th>
+      <th>AssetStatus</th>
+      <th>DownloadUrl</th>
+      <th>Transcription</th>
+      <th>Tags</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <th>0</th>
+      <td>Mary Church Terrell: Advocate for African Amer...</td>
+      <td>Address and appointment books</td>
+      <td>Mary Church Terrell Papers: Appointment Calend...</td>
+      <td>mss425490014</td>
+      <td>mss425490014-1</td>
+      <td>7580</td>
+      <td>completed</td>
+      <td>http://tile.loc.gov/image-services/iiif/servic...</td>
+      <td>Office Supplies typewriter ribbons fountain pe...</td>
+      <td>Mrs Ella Wheeler Wilcox; Woman Suffrage Conven...</td>
+    </tr>
+    <tr>
+      <th>1</th>
+      <td>Mary Church Terrell: Advocate for African Amer...</td>
+      <td>Address and appointment books</td>
+      <td>Mary Church Terrell Papers: Appointment Calend...</td>
+      <td>mss425490014</td>
+      <td>mss425490014-2</td>
+      <td>7581</td>
+      <td>completed</td>
+      <td>http://tile.loc.gov/image-services/iiif/servic...</td>
+      <td>March 16, Wednesday,1904 - Dr. Booker Washingt...</td>
+      <td>Cruger; Calloway; VanRensselaer; Booker; Washi...</td>
+    </tr>
+    <tr>
+      <th>2</th>
+      <td>Mary Church Terrell: Advocate for African Amer...</td>
+      <td>Address and appointment books</td>
+      <td>Mary Church Terrell Papers: Appointment Calend...</td>
+      <td>mss425490014</td>
+      <td>mss425490014-3</td>
+      <td>7582</td>
+      <td>completed</td>
+      <td>http://tile.loc.gov/image-services/iiif/servic...</td>
+      <td>Fountain Pens Repaired\r\nTablets\r\nTypewrite...</td>
+      <td>Pennsylvania; committee; Washington Post</td>
+    </tr>
+    <tr>
+      <th>3</th>
+      <td>Mary Church Terrell: Advocate for African Amer...</td>
+      <td>Address and appointment books</td>
+      <td>Mary Church Terrell Papers: Appointment Calend...</td>
+      <td>mss425490014</td>
+      <td>mss425490014-4</td>
+      <td>7583</td>
+      <td>completed</td>
+      <td>http://tile.loc.gov/image-services/iiif/servic...</td>
+      <td>May, 1904\r\n\r\n1 SUNDAY Received invitation ...</td>
+      <td>NaN</td>
+    </tr>
+    <tr>
+      <th>4</th>
+      <td>Mary Church Terrell: Advocate for African Amer...</td>
+      <td>Address and appointment books</td>
+      <td>Mary Church Terrell Papers: Appointment Calend...</td>
+      <td>mss425490014</td>
+      <td>mss425490014-5</td>
+      <td>7584</td>
+      <td>completed</td>
+      <td>http://tile.loc.gov/image-services/iiif/servic...</td>
+      <td>June, 1904\r\n\r\n7 TUESDAY Reached Bremer Hav...</td>
+      <td>Berlin; Congress morning; June 1904; Paris</td>
+    </tr>
+  </tbody>
+</table>
+</div></div></div>
+</div>
+</section>
+</section>
+</section>
+<section id="create-a-new-column-containing-the-output-of-the-tokens-function">
+<h2>Create a new column containing the output of the <code class="docutils literal notranslate"><span class="pre">tokens</span></code> function<a class="headerlink" href="#create-a-new-column-containing-the-output-of-the-tokens-function" title="Permalink to this heading">#</a></h2>
+<p>The <code class="docutils literal notranslate"><span class="pre">tokens</span></code> function uses the previously loaded spaCy model to analyze each word in the transcription. This results in several values for each word, including the lemma, the part-of-speech tag, the shape of the word, and whether it is a stop word or number.</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1"># NOTE: This will take a while to run</span>
+<span class="k">for</span> <span class="n">dataset</span> <span class="ow">in</span> <span class="p">[</span><span class="n">a</span><span class="p">,</span> <span class="n">c</span><span class="p">,</span> <span class="n">s</span><span class="p">,</span> <span class="n">t</span><span class="p">]:</span>
+    <span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;Tokenizing text for dataset: </span><span class="si">{</span><span class="n">dataset</span><span class="p">[</span><span class="s1">&#39;Campaign&#39;</span><span class="p">][</span><span class="mi">0</span><span class="p">]</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
+    <span class="n">dataset</span><span class="p">[</span><span class="s1">&#39;tokenized_text&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="n">dataset</span><span class="p">[</span><span class="s1">&#39;Transcription&#39;</span><span class="p">]</span><span class="o">.</span><span class="n">apply</span><span class="p">(</span><span class="n">tokens</span><span class="p">)</span>
+<span class="nb">print</span><span class="p">(</span><span class="s2">&quot;Done!&quot;</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Tokenizing text for dataset: Susan B. Anthony Papers
+Tokenizing text for dataset: Carrie Chapman Catt Papers
+Tokenizing text for dataset: Elizabeth Cady Stanton Papers
+Tokenizing text for dataset: Mary Church Terrell: Advocate for African Americans and Women
+Done!
+</pre></div>
+</div>
+</div>
+</div>
+</section>
+<section id="create-a-new-column-containing-the-output-of-the-entities-function">
+<h2>Create a new column containing the output of the <code class="docutils literal notranslate"><span class="pre">entities</span></code> function<a class="headerlink" href="#create-a-new-column-containing-the-output-of-the-entities-function" title="Permalink to this heading">#</a></h2>
+<p>The <code class="docutils literal notranslate"><span class="pre">entities</span></code> function uses the previously loaded spaCy model to identify persons, places, organizations, etc.</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1"># NOTE: This will take a while to run</span>
+<span class="k">for</span> <span class="n">dataset</span> <span class="ow">in</span> <span class="p">[</span><span class="n">a</span><span class="p">,</span> <span class="n">c</span><span class="p">,</span> <span class="n">s</span><span class="p">,</span> <span class="n">t</span><span class="p">]:</span>
+    <span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;Identifying entities for dataset: </span><span class="si">{</span><span class="n">dataset</span><span class="p">[</span><span class="s1">&#39;Campaign&#39;</span><span class="p">][</span><span class="mi">0</span><span class="p">]</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
+    <span class="n">dataset</span><span class="p">[</span><span class="s1">&#39;entities&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="n">dataset</span><span class="p">[</span><span class="s1">&#39;Transcription&#39;</span><span class="p">]</span><span class="o">.</span><span class="n">apply</span><span class="p">(</span><span class="n">entities</span><span class="p">)</span>
+<span class="nb">print</span><span class="p">(</span><span class="s2">&quot;Done!&quot;</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Identifying entities for dataset: Susan B. Anthony Papers
+</pre></div>
+</div>
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Identifying entities for dataset: Carrie Chapman Catt Papers
+Identifying entities for dataset: Elizabeth Cady Stanton Papers
+Identifying entities for dataset: Mary Church Terrell: Advocate for African Americans and Women
+Done!
+</pre></div>
+</div>
+</div>
+</div>
+<section id="optional-preview-the-results-of-the-entities-functions-for-the-first-row-of-a-dataset">
+<h3>Optional: Preview the results of the <code class="docutils literal notranslate"><span class="pre">entities</span></code> functions for the first row of a dataset<a class="headerlink" href="#optional-preview-the-results-of-the-entities-functions-for-the-first-row-of-a-dataset" title="Permalink to this heading">#</a></h3>
+<section id="id1">
+<h4>Anthony<a class="headerlink" href="#id1" title="Permalink to this heading">#</a></h4>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">pd</span><span class="o">.</span><span class="n">DataFrame</span><span class="p">([{</span><span class="s2">&quot;Text&quot;</span><span class="p">:</span> <span class="n">row</span><span class="p">[</span><span class="mi">0</span><span class="p">],</span> <span class="s2">&quot;Entity&quot;</span><span class="p">:</span> <span class="n">row</span><span class="p">[</span><span class="mi">3</span><span class="p">]}</span> <span class="k">for</span> <span class="n">row</span> <span class="ow">in</span> <span class="n">a</span><span class="p">[</span><span class="s1">&#39;entities&#39;</span><span class="p">]</span><span class="o">.</span><span class="n">iloc</span><span class="p">[</span><span class="mi">0</span><span class="p">]])</span><span class="o">.</span><span class="n">head</span><span class="p">(</span><span class="mi">10</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output text_html"><div>
+<style scoped>
+    .dataframe tbody tr th:only-of-type {
+        vertical-align: middle;
+    }
+
+    .dataframe tbody tr th {
+        vertical-align: top;
+    }
+
+    .dataframe thead th {
+        text-align: right;
+    }
+</style>
+<table border="1" class="dataframe">
+  <thead>
+    <tr style="text-align: right;">
+      <th></th>
+      <th>Text</th>
+      <th>Entity</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <th>0</th>
+      <td>Susan B. Anthony      SPEECHES</td>
+      <td>PERSON</td>
+    </tr>
+    <tr>
+      <th>1</th>
+      <td>WRITINGS FILE        Delivered</td>
+      <td>ORG</td>
+    </tr>
+    <tr>
+      <th>2</th>
+      <td>first</td>
+      <td>ORDINAL</td>
+    </tr>
+    <tr>
+      <th>3</th>
+      <td>Batavia</td>
+      <td>GPE</td>
+    </tr>
+    <tr>
+      <th>4</th>
+      <td>2</td>
+      <td>CARDINAL</td>
+    </tr>
+    <tr>
+      <th>5</th>
+      <td>May 1852</td>
+      <td>DATE</td>
+    </tr>
+    <tr>
+      <th>6</th>
+      <td>1852</td>
+      <td>DATE</td>
+    </tr>
+  </tbody>
+</table>
+</div></div></div>
+</div>
+</section>
+<section id="id2">
+<h4>Catt<a class="headerlink" href="#id2" title="Permalink to this heading">#</a></h4>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">pd</span><span class="o">.</span><span class="n">DataFrame</span><span class="p">([{</span><span class="s2">&quot;Text&quot;</span><span class="p">:</span> <span class="n">row</span><span class="p">[</span><span class="mi">0</span><span class="p">],</span> <span class="s2">&quot;Entity&quot;</span><span class="p">:</span> <span class="n">row</span><span class="p">[</span><span class="mi">3</span><span class="p">]}</span> <span class="k">for</span> <span class="n">row</span> <span class="ow">in</span> <span class="n">c</span><span class="p">[</span><span class="s1">&#39;entities&#39;</span><span class="p">]</span><span class="o">.</span><span class="n">iloc</span><span class="p">[</span><span class="mi">0</span><span class="p">]])</span><span class="o">.</span><span class="n">head</span><span class="p">(</span><span class="mi">10</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output text_html"><div>
+<style scoped>
+    .dataframe tbody tr th:only-of-type {
+        vertical-align: middle;
+    }
+
+    .dataframe tbody tr th {
+        vertical-align: top;
+    }
+
+    .dataframe thead th {
+        text-align: right;
+    }
+</style>
+<table border="1" class="dataframe">
+  <thead>
+    <tr style="text-align: right;">
+      <th></th>
+      <th>Text</th>
+      <th>Entity</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <th>0</th>
+      <td>CATT</td>
+      <td>PERSON</td>
+    </tr>
+    <tr>
+      <th>1</th>
+      <td>Carrie Chapman\r\nSPEECH</td>
+      <td>PERSON</td>
+    </tr>
+    <tr>
+      <th>2</th>
+      <td>ARTICLE, BOOK FILE\r\nSpeech</td>
+      <td>LAW</td>
+    </tr>
+  </tbody>
+</table>
+</div></div></div>
+</div>
+</section>
+<section id="id3">
+<h4>Stanton<a class="headerlink" href="#id3" title="Permalink to this heading">#</a></h4>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">pd</span><span class="o">.</span><span class="n">DataFrame</span><span class="p">([{</span><span class="s2">&quot;Text&quot;</span><span class="p">:</span> <span class="n">row</span><span class="p">[</span><span class="mi">0</span><span class="p">],</span> <span class="s2">&quot;Entity&quot;</span><span class="p">:</span> <span class="n">row</span><span class="p">[</span><span class="mi">3</span><span class="p">]}</span> <span class="k">for</span> <span class="n">row</span> <span class="ow">in</span> <span class="n">s</span><span class="p">[</span><span class="s1">&#39;entities&#39;</span><span class="p">]</span><span class="o">.</span><span class="n">iloc</span><span class="p">[</span><span class="mi">0</span><span class="p">]])</span><span class="o">.</span><span class="n">head</span><span class="p">(</span><span class="mi">10</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output text_html"><div>
+<style scoped>
+    .dataframe tbody tr th:only-of-type {
+        vertical-align: middle;
+    }
+
+    .dataframe tbody tr th {
+        vertical-align: top;
+    }
+
+    .dataframe thead th {
+        text-align: right;
+    }
+</style>
+<table border="1" class="dataframe">
+  <thead>
+    <tr style="text-align: right;">
+      <th></th>
+      <th>Text</th>
+      <th>Entity</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <th>0</th>
+      <td>Elizabeth Cady Stanton</td>
+      <td>PERSON</td>
+    </tr>
+    <tr>
+      <th>1</th>
+      <td>1814 - 49</td>
+      <td>DATE</td>
+    </tr>
+  </tbody>
+</table>
+</div></div></div>
+</div>
+</section>
+<section id="id4">
+<h4>Terrell<a class="headerlink" href="#id4" title="Permalink to this heading">#</a></h4>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">pd</span><span class="o">.</span><span class="n">DataFrame</span><span class="p">([{</span><span class="s2">&quot;Text&quot;</span><span class="p">:</span> <span class="n">row</span><span class="p">[</span><span class="mi">0</span><span class="p">],</span> <span class="s2">&quot;Entity&quot;</span><span class="p">:</span> <span class="n">row</span><span class="p">[</span><span class="mi">3</span><span class="p">]}</span> <span class="k">for</span> <span class="n">row</span> <span class="ow">in</span> <span class="n">t</span><span class="p">[</span><span class="s1">&#39;entities&#39;</span><span class="p">]</span><span class="o">.</span><span class="n">iloc</span><span class="p">[</span><span class="mi">0</span><span class="p">]])</span><span class="o">.</span><span class="n">head</span><span class="p">(</span><span class="mi">10</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output text_html"><div>
+<style scoped>
+    .dataframe tbody tr th:only-of-type {
+        vertical-align: middle;
+    }
+
+    .dataframe tbody tr th {
+        vertical-align: top;
+    }
+
+    .dataframe thead th {
+        text-align: right;
+    }
+</style>
+<table border="1" class="dataframe">
+  <thead>
+    <tr style="text-align: right;">
+      <th></th>
+      <th>Text</th>
+      <th>Entity</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <th>0</th>
+      <td>Swett</td>
+      <td>PERSON</td>
+    </tr>
+    <tr>
+      <th>1</th>
+      <td>Stationery Blank Books</td>
+      <td>ORG</td>
+    </tr>
+    <tr>
+      <th>2</th>
+      <td>P Swett</td>
+      <td>PERSON</td>
+    </tr>
+    <tr>
+      <th>3</th>
+      <td>February, 1904</td>
+      <td>DATE</td>
+    </tr>
+    <tr>
+      <th>4</th>
+      <td>178</td>
+      <td>CARDINAL</td>
+    </tr>
+    <tr>
+      <th>5</th>
+      <td>Monday\r\n2 Tuesday\r\n3</td>
+      <td>DATE</td>
+    </tr>
+    <tr>
+      <th>6</th>
+      <td>Wednesday\r\n4</td>
+      <td>DATE</td>
+    </tr>
+    <tr>
+      <th>7</th>
+      <td>Thursday \r\n5 Friday\r\n6</td>
+      <td>DATE</td>
+    </tr>
+    <tr>
+      <th>8</th>
+      <td>Crandall Association</td>
+      <td>ORG</td>
+    </tr>
+    <tr>
+      <th>9</th>
+      <td>7:30\r\nSpecial</td>
+      <td>TIME</td>
+    </tr>
+  </tbody>
+</table>
+</div></div></div>
+</div>
+</section>
+</section>
+</section>
+<section id="run-the-separate-text-function-to-isolate-tokens-by-category">
+<h2>Run the <code class="docutils literal notranslate"><span class="pre">separate_text</span></code> function to isolate tokens by category<a class="headerlink" href="#run-the-separate-text-function-to-isolate-tokens-by-category" title="Permalink to this heading">#</a></h2>
+<p>The <code class="docutils literal notranslate"><span class="pre">separate_text</span></code> function uses labels generated by the <code class="docutils literal notranslate"><span class="pre">spaCy</span></code> library to organize the contents of each transcription into actual text, stop words (conjunctions, prepositions, etc.), non-alphanumeric strings (punctuation, whitespace, etc.), numbers, and ambiguous words (when a transcriber cannot make out a word or character, a <code class="docutils literal notranslate"><span class="pre">?</span></code> will be used for the unknown character(s); this is reflected in the analyzed pattern of the word which is used to remove these words from the text category).</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1"># Run the separate_text function on the Anthony data frame</span>
+<span class="k">for</span> <span class="n">dataset</span> <span class="ow">in</span> <span class="p">[</span><span class="n">a</span><span class="p">,</span> <span class="n">c</span><span class="p">,</span> <span class="n">s</span><span class="p">,</span> <span class="n">t</span><span class="p">]:</span>
+    <span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;Organizing tokens by category for: </span><span class="si">{</span><span class="n">dataset</span><span class="p">[</span><span class="s1">&#39;Campaign&#39;</span><span class="p">][</span><span class="mi">0</span><span class="p">]</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
+    <span class="n">separate_text</span><span class="p">(</span><span class="n">dataset</span><span class="p">)</span>
+<span class="nb">print</span><span class="p">(</span><span class="s2">&quot;Done!&quot;</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Organizing tokens by category for: Susan B. Anthony Papers
+Organizing tokens by category for: Carrie Chapman Catt Papers
+Organizing tokens by category for: Elizabeth Cady Stanton Papers
+Organizing tokens by category for: Mary Church Terrell: Advocate for African Americans and Women
+Done!
+</pre></div>
+</div>
+</div>
+</div>
+<section id="cache-the-result-for-next-steps">
+<h3>Cache the result for next steps<a class="headerlink" href="#cache-the-result-for-next-steps" title="Permalink to this heading">#</a></h3>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="k">for</span> <span class="n">dataset</span> <span class="ow">in</span> <span class="p">[</span><span class="n">a</span><span class="p">,</span> <span class="n">c</span><span class="p">,</span> <span class="n">s</span><span class="p">,</span> <span class="n">t</span><span class="p">]:</span>
+    <span class="n">write_cache</span><span class="p">(</span><span class="n">dataset</span><span class="p">,</span> <span class="nb">str</span><span class="p">(</span><span class="n">dataset</span><span class="p">[</span><span class="s1">&#39;Campaign&#39;</span><span class="p">][</span><span class="mi">0</span><span class="p">]))</span>
+</pre></div>
+</div>
+</div>
+</div>
+</section>
+<section id="optional-preview-the-results-for-the-first-six-rows-of-the-updated-data-frame">
+<h3>Optional: Preview the results for the first six rows of the updated data frame<a class="headerlink" href="#optional-preview-the-results-for-the-first-six-rows-of-the-updated-data-frame" title="Permalink to this heading">#</a></h3>
+<section id="id5">
+<h4>Anthony<a class="headerlink" href="#id5" title="Permalink to this heading">#</a></h4>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">a</span><span class="o">.</span><span class="n">iloc</span><span class="p">[</span><span class="mi">0</span><span class="p">:</span><span class="mi">6</span><span class="p">]</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output text_html"><div>
+<style scoped>
+    .dataframe tbody tr th:only-of-type {
+        vertical-align: middle;
+    }
+
+    .dataframe tbody tr th {
+        vertical-align: top;
+    }
+
+    .dataframe thead th {
+        text-align: right;
+    }
+</style>
+<table border="1" class="dataframe">
+  <thead>
+    <tr style="text-align: right;">
+      <th></th>
+      <th>Campaign</th>
+      <th>Project</th>
+      <th>Item</th>
+      <th>ItemId</th>
+      <th>Asset</th>
+      <th>AssetId</th>
+      <th>AssetStatus</th>
+      <th>DownloadUrl</th>
+      <th>Transcription</th>
+      <th>Tags</th>
+      <th>tokenized_text</th>
+      <th>entities</th>
+      <th>text</th>
+      <th>stop_words</th>
+      <th>nonalphanums</th>
+      <th>numbers</th>
+      <th>ambigs</th>
+      <th>processed_text</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <th>0</th>
+      <td>Susan B. Anthony Papers</td>
+      <td>Speeches and other writings</td>
+      <td>Susan B. Anthony Papers: Speeches and Writings...</td>
+      <td>mss11049038</td>
+      <td>mss11049038-1</td>
+      <td>179295</td>
+      <td>completed</td>
+      <td>http://tile.loc.gov/image-services/iiif/servic...</td>
+      <td>Susan B. Anthony      SPEECHES AND WRITINGS FI...</td>
+      <td>May 1852</td>
+      <td>[(Susan, Susan, PROPN, NNP, compound, Xxxxx, T...</td>
+      <td>[(Susan B. Anthony      SPEECHES, 0, 30, PERSO...</td>
+      <td>[(Susan, Susan, PROPN, NNP, compound, Xxxxx, T...</td>
+      <td>[(AND, and, CCONJ, CC, cc, XXX, True, True), (...</td>
+      <td>[(     ,      , SPACE, _SP, dep,     , False, ...</td>
+      <td>[(2, 2, NUM, CD, nummod, d, False, False), (18...</td>
+      <td>[]</td>
+      <td>[susan, b., anthony, speeches, writing, file, ...</td>
+    </tr>
+    <tr>
+      <th>1</th>
+      <td>Susan B. Anthony Papers</td>
+      <td>Speeches and other writings</td>
+      <td>Susan B. Anthony Papers: Speeches and Writings...</td>
+      <td>mss11049038</td>
+      <td>mss11049038-2</td>
+      <td>179296</td>
+      <td>completed</td>
+      <td>http://tile.loc.gov/image-services/iiif/servic...</td>
+      <td>/52\r\nS.B.A-\r\n\r\nDelivered for the\r\nFirs...</td>
+      <td>NaN</td>
+      <td>[(/52, /52, PROPN, NNP, punct, /dd, False, Fal...</td>
+      <td>[(Batavia, 44, 51, GPE), (N.J., 52, 56, GPE), ...</td>
+      <td>[(/52, /52, PROPN, NNP, punct, /dd, False, Fal...</td>
+      <td>[(for, for, ADP, IN, prep, xxx, True, True), (...</td>
+      <td>[(\r\n, \r\n, SPACE, _SP, dep, \r\n, False, Fa...</td>
+      <td>[(1852, 1852, NUM, CD, nummod, dddd, False, Fa...</td>
+      <td>[]</td>
+      <td>[/52, s.b.a-, deliver, batavia, n.j., company,...</td>
+    </tr>
+    <tr>
+      <th>2</th>
+      <td>Susan B. Anthony Papers</td>
+      <td>Speeches and other writings</td>
+      <td>Susan B. Anthony Papers: Speeches and Writings...</td>
+      <td>mss11049038</td>
+      <td>mss11049038-3</td>
+      <td>179297</td>
+      <td>completed</td>
+      <td>http://tile.loc.gov/image-services/iiif/servic...</td>
+      <td>will the best &amp; wisest of mothers continue\r\n...</td>
+      <td>temperance</td>
+      <td>[(will, will, AUX, MD, aux, xxxx, True, True),...</td>
+      <td>[(the\r\nSociety, 295, 307, ORG), (two, 324, 3...</td>
+      <td>[(best, good, ADJ, JJS, nsubj, xxxx, True, Fal...</td>
+      <td>[(will, will, AUX, MD, aux, xxxx, True, True),...</td>
+      <td>[(&amp;, &amp;, CCONJ, CC, cc, &amp;, False, False), (\r\n...</td>
+      <td>[]</td>
+      <td>[]</td>
+      <td>[good, wise, mother, continue, son, fall, vict...</td>
+    </tr>
+    <tr>
+      <th>3</th>
+      <td>Susan B. Anthony Papers</td>
+      <td>Speeches and other writings</td>
+      <td>Susan B. Anthony Papers: Speeches and Writings...</td>
+      <td>mss11049038</td>
+      <td>mss11049038-4</td>
+      <td>179298</td>
+      <td>completed</td>
+      <td>http://tile.loc.gov/image-services/iiif/servic...</td>
+      <td>[Mind] the youthful mind.  Of how\r\nlittle av...</td>
+      <td>temperance</td>
+      <td>[([, [, X, XX, dep, [, False, False), (Mind, m...</td>
+      <td>[(christian, 77, 86, NORP), (truth  &amp; sobernes...</td>
+      <td>[(Mind, mind, VERB, VB, dep, Xxxx, True, False...</td>
+      <td>[(the, the, DET, DT, det, xxx, True, True), (O...</td>
+      <td>[([, [, X, XX, dep, [, False, False), (], ], X...</td>
+      <td>[]</td>
+      <td>[]</td>
+      <td>[mind, youthful, mind, little, avail, untire, ...</td>
+    </tr>
+    <tr>
+      <th>4</th>
+      <td>Susan B. Anthony Papers</td>
+      <td>Speeches and other writings</td>
+      <td>Susan B. Anthony Papers: Speeches and Writings...</td>
+      <td>mss11049038</td>
+      <td>mss11049038-5</td>
+      <td>179299</td>
+      <td>completed</td>
+      <td>http://tile.loc.gov/image-services/iiif/servic...</td>
+      <td>x\r\nWhile we labor to reclaim one generation ...</td>
+      <td>temperance</td>
+      <td>[(x, x, ADP, IN, punct, x, True, False), (\r\n...</td>
+      <td>[(one, 29, 32, CARDINAL), (Legislature, 145, 1...</td>
+      <td>[(x, x, ADP, IN, punct, x, True, False), (labo...</td>
+      <td>[(While, while, SCONJ, IN, mark, Xxxxx, True, ...</td>
+      <td>[(\r\n, \r\n, SPACE, _SP, dep, \r\n, False, Fa...</td>
+      <td>[]</td>
+      <td>[]</td>
+      <td>[x, labor, reclaim, generation, drunkard, rise...</td>
+    </tr>
+    <tr>
+      <th>5</th>
+      <td>Susan B. Anthony Papers</td>
+      <td>Speeches and other writings</td>
+      <td>Susan B. Anthony Papers: Speeches and Writings...</td>
+      <td>mss11049038</td>
+      <td>mss11049038-6</td>
+      <td>179300</td>
+      <td>completed</td>
+      <td>http://tile.loc.gov/image-services/iiif/servic...</td>
+      <td>Howard &amp; their influence to help on the\r\nwor...</td>
+      <td>temperance</td>
+      <td>[(Howard, Howard, PROPN, NNP, ROOT, Xxxxx, Tru...</td>
+      <td>[(Howard &amp;, 0, 8, ORG), (State, 200, 205, ORG)...</td>
+      <td>[(Howard, Howard, PROPN, NNP, ROOT, Xxxxx, Tru...</td>
+      <td>[(their, their, PRON, PRP$, poss, xxxx, True, ...</td>
+      <td>[(&amp;, &amp;, CCONJ, CC, cc, &amp;, False, False), (\r\n...</td>
+      <td>[(50, 50, NUM, CD, nummod, dd, False, False), ...</td>
+      <td>[]</td>
+      <td>[howard, influence, help, work, lie, traffic, ...</td>
+    </tr>
+  </tbody>
+</table>
+</div></div></div>
+</div>
+</section>
+<section id="id6">
+<h4>Catt<a class="headerlink" href="#id6" title="Permalink to this heading">#</a></h4>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">c</span><span class="o">.</span><span class="n">iloc</span><span class="p">[</span><span class="mi">0</span><span class="p">:</span><span class="mi">6</span><span class="p">]</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output text_html"><div>
+<style scoped>
+    .dataframe tbody tr th:only-of-type {
+        vertical-align: middle;
+    }
+
+    .dataframe tbody tr th {
+        vertical-align: top;
+    }
+
+    .dataframe thead th {
+        text-align: right;
+    }
+</style>
+<table border="1" class="dataframe">
+  <thead>
+    <tr style="text-align: right;">
+      <th></th>
+      <th>Campaign</th>
+      <th>Project</th>
+      <th>Item</th>
+      <th>ItemId</th>
+      <th>Asset</th>
+      <th>AssetId</th>
+      <th>AssetStatus</th>
+      <th>DownloadUrl</th>
+      <th>Transcription</th>
+      <th>Tags</th>
+      <th>tokenized_text</th>
+      <th>entities</th>
+      <th>text</th>
+      <th>stop_words</th>
+      <th>nonalphanums</th>
+      <th>numbers</th>
+      <th>ambigs</th>
+      <th>processed_text</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <th>0</th>
+      <td>Carrie Chapman Catt Papers</td>
+      <td>Speeches and articles</td>
+      <td>Carrie Chapman Catt Papers: Speech and Article...</td>
+      <td>mss154040385</td>
+      <td>mss154040385-1</td>
+      <td>189284</td>
+      <td>completed</td>
+      <td>http://tile.loc.gov/image-services/iiif/servic...</td>
+      <td>CATT, Carrie Chapman\r\nSPEECH, ARTICLE, BOOK ...</td>
+      <td>NaN</td>
+      <td>[(CATT, CATT, PROPN, NNP, ROOT, XXXX, True, Fa...</td>
+      <td>[(CATT, 0, 4, PERSON), (Carrie Chapman\r\nSPEE...</td>
+      <td>[(CATT, CATT, PROPN, NNP, ROOT, XXXX, True, Fa...</td>
+      <td>[(An, an, DET, DT, det, Xx, True, True), (For,...</td>
+      <td>[(,, ,, PUNCT, ,, punct, ,, False, False), (\r...</td>
+      <td>[]</td>
+      <td>[]</td>
+      <td>[catt, carrie, chapman, speech, article, book,...</td>
+    </tr>
+    <tr>
+      <th>1</th>
+      <td>Carrie Chapman Catt Papers</td>
+      <td>Speeches and articles</td>
+      <td>Carrie Chapman Catt Papers: Speech and Article...</td>
+      <td>mss154040385</td>
+      <td>mss154040385-2</td>
+      <td>189285</td>
+      <td>completed</td>
+      <td>http://tile.loc.gov/image-services/iiif/servic...</td>
+      <td>-2-\r\nWe appeal in the name of our foremother...</td>
+      <td>NaN</td>
+      <td>[(-2-, -2-, PUNCT, ``, punct, -d-, False, Fals...</td>
+      <td>[(-2-\r\n, 0, 5, PERSON), (American, 428, 436,...</td>
+      <td>[(appeal, appeal, VERB, VBP, ccomp, xxxx, True...</td>
+      <td>[(We, we, PRON, PRP, nsubj, Xx, True, True), (...</td>
+      <td>[(-2-, -2-, PUNCT, ``, punct, -d-, False, Fals...</td>
+      <td>[(1,600,000, 1,600,000, NUM, CD, nummod, d,ddd...</td>
+      <td>[]</td>
+      <td>[appeal, foremother, forefather, equal, courag...</td>
+    </tr>
+    <tr>
+      <th>2</th>
+      <td>Carrie Chapman Catt Papers</td>
+      <td>Speeches and articles</td>
+      <td>Carrie Chapman Catt Papers: Speech and Article...</td>
+      <td>mss154040385</td>
+      <td>mss154040385-3</td>
+      <td>189286</td>
+      <td>completed</td>
+      <td>http://tile.loc.gov/image-services/iiif/servic...</td>
+      <td>AN APPEAL FOR LIBERTY.    1915\r\n\r\nBy Carri...</td>
+      <td>NaN</td>
+      <td>[(AN, an, DET, DT, det, XX, True, True), (APPE...</td>
+      <td>[(1915, 26, 30, DATE), (Carrie Chapman Catt, 3...</td>
+      <td>[(APPEAL, APPEAL, PROPN, NNP, ROOT, XXXX, True...</td>
+      <td>[(AN, an, DET, DT, det, XX, True, True), (FOR,...</td>
+      <td>[(., ., PUNCT, ., punct, ., False, False), (  ...</td>
+      <td>[(1915, 1915, NUM, CD, ROOT, dddd, False, Fals...</td>
+      <td>[]</td>
+      <td>[appeal, liberty, carrie, chapman, catt, year,...</td>
+    </tr>
+    <tr>
+      <th>3</th>
+      <td>Carrie Chapman Catt Papers</td>
+      <td>Speeches and articles</td>
+      <td>Carrie Chapman Catt Papers: Speech and Article...</td>
+      <td>mss154040386</td>
+      <td>mss154040386-1</td>
+      <td>189287</td>
+      <td>completed</td>
+      <td>http://tile.loc.gov/image-services/iiif/servic...</td>
+      <td>CATT, Carrie Chapman\r\nSPEECH, ARTICLE, BOOK ...</td>
+      <td>NaN</td>
+      <td>[(CATT, CATT, PROPN, NNP, ROOT, XXXX, True, Fa...</td>
+      <td>[(CATT, 0, 4, PERSON), (Carrie Chapman\r\nSPEE...</td>
+      <td>[(CATT, CATT, PROPN, NNP, ROOT, XXXX, True, Fa...</td>
+      <td>[(Be, be, AUX, VB, ROOT, Xx, True, True)]</td>
+      <td>[(,, ,, PUNCT, ,, punct, ,, False, False), (\r...</td>
+      <td>[]</td>
+      <td>[]</td>
+      <td>[catt, carrie, chapman, speech, article, book,...</td>
+    </tr>
+    <tr>
+      <th>4</th>
+      <td>Carrie Chapman Catt Papers</td>
+      <td>Speeches and articles</td>
+      <td>Carrie Chapman Catt Papers: Speech and Article...</td>
+      <td>mss154040386</td>
+      <td>mss154040386-2</td>
+      <td>189288</td>
+      <td>completed</td>
+      <td>http://tile.loc.gov/image-services/iiif/servic...</td>
+      <td>The \r\nWoman Citizen\r\nA WEEKLY CHRONICLE OF...</td>
+      <td>NaN</td>
+      <td>[(The, the, DET, DT, det, Xxx, True, True), (\...</td>
+      <td>[(Carrie Chapman Catt, 156, 175, PERSON), (Con...</td>
+      <td>[(Woman, Woman, PROPN, NNP, compound, Xxxxx, T...</td>
+      <td>[(The, the, DET, DT, det, Xxx, True, True), (A...</td>
+      <td>[(\r\n, \r\n, SPACE, _SP, dep, \r\n, False, Fa...</td>
+      <td>[(21, 21, NUM, CD, nummod, dd, False, False), ...</td>
+      <td>[]</td>
+      <td>[woman, citizen, weekly, chronicle, progress, ...</td>
+    </tr>
+    <tr>
+      <th>5</th>
+      <td>Carrie Chapman Catt Papers</td>
+      <td>Speeches and articles</td>
+      <td>Carrie Chapman Catt Papers: Speech and Article...</td>
+      <td>mss154040386</td>
+      <td>mss154040386-3</td>
+      <td>189289</td>
+      <td>completed</td>
+      <td>http://tile.loc.gov/image-services/iiif/servic...</td>
+      <td>Eight Hundred and Eighty-six                  ...</td>
+      <td>NaN</td>
+      <td>[(Eight, eight, NUM, CD, compound, Xxxxx, True...</td>
+      <td>[(Eight Hundred and Eighty-six, 0, 28, CARDINA...</td>
+      <td>[(Woman, Woman, PROPN, NNP, nmod, Xxxxx, True,...</td>
+      <td>[(Eight, eight, NUM, CD, compound, Xxxxx, True...</td>
+      <td>[(-, -, PUNCT, HYPH, punct, -, False, False), ...</td>
+      <td>[(Eighty, eighty, NUM, CD, compound, Xxxxx, Tr...</td>
+      <td>[]</td>
+      <td>[woman, citizen, illinois, wisconsin, respecti...</td>
+    </tr>
+  </tbody>
+</table>
+</div></div></div>
+</div>
+</section>
+<section id="id7">
+<h4>Stanton<a class="headerlink" href="#id7" title="Permalink to this heading">#</a></h4>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">s</span><span class="o">.</span><span class="n">iloc</span><span class="p">[</span><span class="mi">0</span><span class="p">:</span><span class="mi">6</span><span class="p">]</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output text_html"><div>
+<style scoped>
+    .dataframe tbody tr th:only-of-type {
+        vertical-align: middle;
+    }
+
+    .dataframe tbody tr th {
+        vertical-align: top;
+    }
+
+    .dataframe thead th {
+        text-align: right;
+    }
+</style>
+<table border="1" class="dataframe">
+  <thead>
+    <tr style="text-align: right;">
+      <th></th>
+      <th>Campaign</th>
+      <th>Project</th>
+      <th>Item</th>
+      <th>ItemId</th>
+      <th>Asset</th>
+      <th>AssetId</th>
+      <th>AssetStatus</th>
+      <th>DownloadUrl</th>
+      <th>Transcription</th>
+      <th>Tags</th>
+      <th>tokenized_text</th>
+      <th>entities</th>
+      <th>text</th>
+      <th>stop_words</th>
+      <th>nonalphanums</th>
+      <th>numbers</th>
+      <th>ambigs</th>
+      <th>processed_text</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <th>0</th>
+      <td>Elizabeth Cady Stanton Papers</td>
+      <td>General correspondence</td>
+      <td>Elizabeth Cady Stanton Papers: General Corresp...</td>
+      <td>mss412100001</td>
+      <td>mss412100001-1</td>
+      <td>179712</td>
+      <td>completed</td>
+      <td>http://tile.loc.gov/image-services/iiif/servic...</td>
+      <td>Elizabeth Cady Stanton  GENERAL CORRESPONDENCE...</td>
+      <td>NaN</td>
+      <td>[(Elizabeth, Elizabeth, PROPN, NNP, compound, ...</td>
+      <td>[(Elizabeth Cady Stanton, 0, 22, PERSON), (181...</td>
+      <td>[(Elizabeth, Elizabeth, PROPN, NNP, compound, ...</td>
+      <td>[]</td>
+      <td>[( ,  , SPACE, _SP, dep,  , False, False), (-,...</td>
+      <td>[(1814, 1814, NUM, CD, appos, dddd, False, Fal...</td>
+      <td>[]</td>
+      <td>[elizabeth, cady, stanton, general, correspond...</td>
+    </tr>
+    <tr>
+      <th>1</th>
+      <td>Elizabeth Cady Stanton Papers</td>
+      <td>General correspondence</td>
+      <td>Elizabeth Cady Stanton Papers: General Corresp...</td>
+      <td>mss412100001</td>
+      <td>mss412100001-2</td>
+      <td>179713</td>
+      <td>completed</td>
+      <td>http://tile.loc.gov/image-services/iiif/servic...</td>
+      <td>The following four letters are \r\nfrom Daniel...</td>
+      <td>Peter Smith; Daniel Cady; Judge Cady</td>
+      <td>[(The, the, DET, DT, det, Xxx, True, True), (f...</td>
+      <td>[(four, 14, 18, CARDINAL), (Daniel Cady, 38, 4...</td>
+      <td>[(following, follow, VERB, VBG, amod, xxxx, Tr...</td>
+      <td>[(The, the, DET, DT, det, Xxx, True, True), (f...</td>
+      <td>[(\r\n, \r\n, SPACE, _SP, dep, \r\n, False, Fa...</td>
+      <td>[]</td>
+      <td>[]</td>
+      <td>[follow, letter, daniel, cady, peter, smith, j...</td>
+    </tr>
+    <tr>
+      <th>2</th>
+      <td>Elizabeth Cady Stanton Papers</td>
+      <td>General correspondence</td>
+      <td>Elizabeth Cady Stanton Papers: General Corresp...</td>
+      <td>mss412100001</td>
+      <td>mss412100001-3</td>
+      <td>179714</td>
+      <td>completed</td>
+      <td>http://tile.loc.gov/image-services/iiif/servic...</td>
+      <td>22                                            ...</td>
+      <td>NaN</td>
+      <td>[(22, 22, NUM, CD, ROOT, dd, False, False), ( ...</td>
+      <td>[(22, 0, 2, CARDINAL), (2 Dec. 1814, 91, 102, ...</td>
+      <td>[(Dec., Dec., PROPN, NNP, npadvmod, Xxx., Fals...</td>
+      <td>[(It, it, PRON, PRP, nsubj, Xx, True, True), (...</td>
+      <td>[(                                            ...</td>
+      <td>[(22, 22, NUM, CD, ROOT, dd, False, False), (2...</td>
+      <td>[]</td>
+      <td>[dec., dear, sir, true, lose, young, child, th...</td>
+    </tr>
+    <tr>
+      <th>3</th>
+      <td>Elizabeth Cady Stanton Papers</td>
+      <td>General correspondence</td>
+      <td>Elizabeth Cady Stanton Papers: General Corresp...</td>
+      <td>mss412100001</td>
+      <td>mss412100001-4</td>
+      <td>179715</td>
+      <td>completed</td>
+      <td>http://tile.loc.gov/image-services/iiif/servic...</td>
+      <td>he could to make her respectable &amp; happy. That...</td>
+      <td>Peter Smith; Bonaparte</td>
+      <td>[(he, he, PRON, PRP, nsubj, xx, True, True), (...</td>
+      <td>[(one, 467, 470, CARDINAL), (one, 614, 617, CA...</td>
+      <td>[(respectable, respectable, ADJ, JJ, ccomp, xx...</td>
+      <td>[(he, he, PRON, PRP, nsubj, xx, True, True), (...</td>
+      <td>[(&amp;, &amp;, CCONJ, CC, cc, &amp;, False, False), (., ....</td>
+      <td>[(2d, 2d, NUM, CD, nummod, dx, False, False), ...</td>
+      <td>[]</td>
+      <td>[respectable, happy, moment, flatter, soon, se...</td>
+    </tr>
+    <tr>
+      <th>4</th>
+      <td>Elizabeth Cady Stanton Papers</td>
+      <td>General correspondence</td>
+      <td>Elizabeth Cady Stanton Papers: General Corresp...</td>
+      <td>mss412100001</td>
+      <td>mss412100001-5</td>
+      <td>179716</td>
+      <td>completed</td>
+      <td>http://tile.loc.gov/image-services/iiif/servic...</td>
+      <td>Johnstown 2 D     Paid 10\r\n\r\n\r\nPeter Smi...</td>
+      <td>Peter Smith</td>
+      <td>[(Johnstown, Johnstown, PROPN, NNP, nmod, Xxxx...</td>
+      <td>[(Johnstown, 0, 9, GPE), (10, 23, 25, CARDINAL...</td>
+      <td>[(Johnstown, Johnstown, PROPN, NNP, nmod, Xxxx...</td>
+      <td>[]</td>
+      <td>[(    ,     , SPACE, _SP, dep,     , False, Fa...</td>
+      <td>[(2, 2, NUM, CD, nummod, d, False, False), (10...</td>
+      <td>[]</td>
+      <td>[johnstown, d, paid, peter, smith, esquire, pe...</td>
+    </tr>
+    <tr>
+      <th>5</th>
+      <td>Elizabeth Cady Stanton Papers</td>
+      <td>General correspondence</td>
+      <td>Elizabeth Cady Stanton Papers: General Corresp...</td>
+      <td>mss412100001</td>
+      <td>mss412100001-6</td>
+      <td>179717</td>
+      <td>completed</td>
+      <td>http://tile.loc.gov/image-services/iiif/servic...</td>
+      <td>23                                \r\nJohnstow...</td>
+      <td>NaN</td>
+      <td>[(23, 23, NUM, CD, nummod, dd, False, False), ...</td>
+      <td>[(23, 0, 2, CARDINAL), (October 1818, 50, 62, ...</td>
+      <td>[(Johnstown, Johnstown, PROPN, NNP, compound, ...</td>
+      <td>[(I, I, PRON, PRP, nsubj, X, True, True), (had...</td>
+      <td>[(                               \r\n,        ...</td>
+      <td>[(23, 23, NUM, CD, nummod, dd, False, False), ...</td>
+      <td>[]</td>
+      <td>[johnstown, 23d, october, dear, sir, fear, van...</td>
+    </tr>
+  </tbody>
+</table>
+</div></div></div>
+</div>
+</section>
+<section id="id8">
+<h4>Terrell<a class="headerlink" href="#id8" title="Permalink to this heading">#</a></h4>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">t</span><span class="o">.</span><span class="n">iloc</span><span class="p">[</span><span class="mi">0</span><span class="p">:</span><span class="mi">6</span><span class="p">]</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output text_html"><div>
+<style scoped>
+    .dataframe tbody tr th:only-of-type {
+        vertical-align: middle;
+    }
+
+    .dataframe tbody tr th {
+        vertical-align: top;
+    }
+
+    .dataframe thead th {
+        text-align: right;
+    }
+</style>
+<table border="1" class="dataframe">
+  <thead>
+    <tr style="text-align: right;">
+      <th></th>
+      <th>Campaign</th>
+      <th>Project</th>
+      <th>Item</th>
+      <th>ItemId</th>
+      <th>Asset</th>
+      <th>AssetId</th>
+      <th>AssetStatus</th>
+      <th>DownloadUrl</th>
+      <th>Transcription</th>
+      <th>Tags</th>
+      <th>tokenized_text</th>
+      <th>entities</th>
+      <th>text</th>
+      <th>stop_words</th>
+      <th>nonalphanums</th>
+      <th>numbers</th>
+      <th>ambigs</th>
+      <th>processed_text</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <th>0</th>
+      <td>Mary Church Terrell: Advocate for African Amer...</td>
+      <td>Address and appointment books</td>
+      <td>Mary Church Terrell Papers: Appointment Calend...</td>
+      <td>mss425490014</td>
+      <td>mss425490014-1</td>
+      <td>7580</td>
+      <td>completed</td>
+      <td>http://tile.loc.gov/image-services/iiif/servic...</td>
+      <td>Office Supplies typewriter ribbons fountain pe...</td>
+      <td>Mrs Ella Wheeler Wilcox; Woman Suffrage Conven...</td>
+      <td>[(Office, office, NOUN, NN, compound, Xxxxx, T...</td>
+      <td>[(Swett, 101, 106, PERSON), (Stationery Blank ...</td>
+      <td>[(Office, office, NOUN, NN, compound, Xxxxx, T...</td>
+      <td>[(’s, ’s, PART, POS, case, ’x, False, True), (...</td>
+      <td>[(\r\n, \r\n, SPACE, _SP, dep, \r\n, False, Fa...</td>
+      <td>[(603, 603, NUM, CD, nummod, ddd, False, False...</td>
+      <td>[]</td>
+      <td>[office, supply, typewriter, ribbon, fountain,...</td>
+    </tr>
+    <tr>
+      <th>1</th>
+      <td>Mary Church Terrell: Advocate for African Amer...</td>
+      <td>Address and appointment books</td>
+      <td>Mary Church Terrell Papers: Appointment Calend...</td>
+      <td>mss425490014</td>
+      <td>mss425490014-2</td>
+      <td>7581</td>
+      <td>completed</td>
+      <td>http://tile.loc.gov/image-services/iiif/servic...</td>
+      <td>March 16, Wednesday,1904 - Dr. Booker Washingt...</td>
+      <td>Cruger; Calloway; VanRensselaer; Booker; Washi...</td>
+      <td>[(March, March, PROPN, NNP, npadvmod, Xxxxx, T...</td>
+      <td>[(March 16, 0, 8, DATE), (Booker, 31, 37, PERS...</td>
+      <td>[(March, March, PROPN, NNP, npadvmod, Xxxxx, T...</td>
+      <td>[(as, as, ADP, IN, prep, xx, True, True), (our...</td>
+      <td>[(,, ,, PUNCT, ,, punct, ,, False, False), (-,...</td>
+      <td>[(16, 16, NUM, CD, nummod, dd, False, False), ...</td>
+      <td>[]</td>
+      <td>[march, wednesday,1904, dr., booker, washingto...</td>
+    </tr>
+    <tr>
+      <th>2</th>
+      <td>Mary Church Terrell: Advocate for African Amer...</td>
+      <td>Address and appointment books</td>
+      <td>Mary Church Terrell Papers: Appointment Calend...</td>
+      <td>mss425490014</td>
+      <td>mss425490014-3</td>
+      <td>7582</td>
+      <td>completed</td>
+      <td>http://tile.loc.gov/image-services/iiif/servic...</td>
+      <td>Fountain Pens Repaired\r\nTablets\r\nTypewrite...</td>
+      <td>Pennsylvania; committee; Washington Post</td>
+      <td>[(Fountain, Fountain, PROPN, NNP, compound, Xx...</td>
+      <td>[(Fountain Pens Repaired\r\nTablets\r\nTypewri...</td>
+      <td>[(Fountain, Fountain, PROPN, NNP, compound, Xx...</td>
+      <td>[('s, 's, PART, POS, case, 'x, False, True), (...</td>
+      <td>[(\r\n, \r\n, SPACE, _SP, dep, \r\n, False, Fa...</td>
+      <td>[(603, 603, NUM, CD, nummod, ddd, False, False...</td>
+      <td>[(?, ?, ADJ, JJ, punct, ?, False, False), (Wi?...</td>
+      <td>[fountain, pens, repaired, tablet, typewriter,...</td>
+    </tr>
+    <tr>
+      <th>3</th>
+      <td>Mary Church Terrell: Advocate for African Amer...</td>
+      <td>Address and appointment books</td>
+      <td>Mary Church Terrell Papers: Appointment Calend...</td>
+      <td>mss425490014</td>
+      <td>mss425490014-4</td>
+      <td>7583</td>
+      <td>completed</td>
+      <td>http://tile.loc.gov/image-services/iiif/servic...</td>
+      <td>May, 1904\r\n\r\n1 SUNDAY Received invitation ...</td>
+      <td>NaN</td>
+      <td>[(May, May, PROPN, NNP, nmod, Xxx, True, True)...</td>
+      <td>[(May, 1904, 0, 9, DATE), (1, 13, 14, CARDINAL...</td>
+      <td>[(SUNDAY, SUNDAY, PROPN, NNP, appos, XXXX, Tru...</td>
+      <td>[(May, May, PROPN, NNP, nmod, Xxx, True, True)...</td>
+      <td>[(,, ,, PUNCT, ,, punct, ,, False, False), (\r...</td>
+      <td>[(1904, 1904, NUM, CD, nummod, dddd, False, Fa...</td>
+      <td>[]</td>
+      <td>[sunday, receive, invitation, fran, olga, mr, ...</td>
+    </tr>
+    <tr>
+      <th>4</th>
+      <td>Mary Church Terrell: Advocate for African Amer...</td>
+      <td>Address and appointment books</td>
+      <td>Mary Church Terrell Papers: Appointment Calend...</td>
+      <td>mss425490014</td>
+      <td>mss425490014-5</td>
+      <td>7584</td>
+      <td>completed</td>
+      <td>http://tile.loc.gov/image-services/iiif/servic...</td>
+      <td>June, 1904\r\n\r\n7 TUESDAY Reached Bremer Hav...</td>
+      <td>Berlin; Congress morning; June 1904; Paris</td>
+      <td>[(June, June, PROPN, NNP, npadvmod, Xxxx, True...</td>
+      <td>[(June, 1904, 0, 10, DATE), (7, 14, 15, CARDIN...</td>
+      <td>[(June, June, PROPN, NNP, npadvmod, Xxxx, True...</td>
+      <td>[(in, in, ADP, IN, prep, xx, True, True), (at,...</td>
+      <td>[(,, ,, PUNCT, ,, punct, ,, False, False), (\r...</td>
+      <td>[(1904, 1904, NUM, CD, nummod, dddd, False, Fa...</td>
+      <td>[]</td>
+      <td>[june, tuesday, reach, bremer, haven, morning,...</td>
+    </tr>
+    <tr>
+      <th>5</th>
+      <td>Mary Church Terrell: Advocate for African Amer...</td>
+      <td>Address and appointment books</td>
+      <td>Mary Church Terrell Papers: Appointment Calend...</td>
+      <td>mss425490014</td>
+      <td>mss425490014-6</td>
+      <td>7585</td>
+      <td>completed</td>
+      <td>http://tile.loc.gov/image-services/iiif/servic...</td>
+      <td>Swett's Blank Books Stationery \r\n603 Seventh...</td>
+      <td>Swett's Blank Books Stationery; Mr Stead; 603 ...</td>
+      <td>[(Swett, Swett, PROPN, NNP, poss, Xxxxx, True,...</td>
+      <td>[(Swett, 0, 5, PERSON), (Blank Books Stationer...</td>
+      <td>[(Swett, Swett, PROPN, NNP, poss, Xxxxx, True,...</td>
+      <td>[('s, 's, PART, POS, case, 'x, False, True), (...</td>
+      <td>[(\r\n, \r\n, SPACE, _SP, dep, \r\n, False, Fa...</td>
+      <td>[(603, 603, NUM, CD, nummod, ddd, False, False...</td>
+      <td>[(?, ?, NOUN, NN, nmod, ?, False, False)]</td>
+      <td>[swett, blank, books, stationery, seventh, str...</td>
+    </tr>
+  </tbody>
+</table>
+</div></div></div>
+</div>
+</section>
+</section>
+</section>
+</section>
+
+    <script type="text/x-thebe-config">
+    {
+        requestKernel: true,
+        binderOptions: {
+            repo: "binder-examples/jupyter-stacks-datascience",
+            ref: "master",
+        },
+        codeMirrorConfig: {
+            theme: "abcdef",
+            mode: "python"
+        },
+        kernelOptions: {
+            name: "python3",
+            path: "./."
+        },
+        predefinedOutput: true
+    }
+    </script>
+    <script>kernelName = 'python3'</script>
+
+                </article>
+              
+
+              
+              
+              
+              
+                <footer class="prev-next-footer">
+                  <!-- Previous / next buttons -->
+<div class="prev-next-area">
+    <a class="left-prev"
+       href="02_definitions.html"
+       title="previous page">
+      <i class="fa-solid fa-angle-left"></i>
+      <div class="prev-next-info">
+        <p class="prev-next-subtitle">previous</p>
+        <p class="prev-next-title">Imports, definitions, and data</p>
+      </div>
+    </a>
+    <a class="right-next"
+       href="04_processing.html"
+       title="next page">
+      <div class="prev-next-info">
+        <p class="prev-next-subtitle">next</p>
+        <p class="prev-next-title">Data Processing</p>
+      </div>
+      <i class="fa-solid fa-angle-right"></i>
+    </a>
+</div>
+                </footer>
+              
+            </div>
+            
+            
+              
+                <div class="bd-sidebar-secondary bd-toc"><div class="sidebar-secondary-items sidebar-secondary__inner">
+
+  <div class="sidebar-secondary-item">
+  <div class="page-toc tocsection onthispage">
+    <i class="fa-solid fa-list"></i> Contents
+  </div>
+  <nav class="bd-toc-nav page-toc">
+    <ul class="visible nav section-nav flex-column">
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#load-each-transcription-dataset-into-a-data-frame">Load each transcription dataset into a data frame</a><ul class="nav section-nav flex-column">
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#optional-preview-the-first-five-lines-of-a-loaded-dataset">Optional: Preview the first five lines of a loaded dataset</a><ul class="nav section-nav flex-column">
+<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#anthony">Anthony</a></li>
+<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#catt">Catt</a></li>
+<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#stanton">Stanton</a></li>
+<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#terrell">Terrell</a></li>
+</ul>
+</li>
+</ul>
+</li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#create-a-new-column-containing-the-output-of-the-tokens-function">Create a new column containing the output of the <code class="docutils literal notranslate"><span class="pre">tokens</span></code> function</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#create-a-new-column-containing-the-output-of-the-entities-function">Create a new column containing the output of the <code class="docutils literal notranslate"><span class="pre">entities</span></code> function</a><ul class="nav section-nav flex-column">
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#optional-preview-the-results-of-the-entities-functions-for-the-first-row-of-a-dataset">Optional: Preview the results of the <code class="docutils literal notranslate"><span class="pre">entities</span></code> functions for the first row of a dataset</a><ul class="nav section-nav flex-column">
+<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#id1">Anthony</a></li>
+<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#id2">Catt</a></li>
+<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#id3">Stanton</a></li>
+<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#id4">Terrell</a></li>
+</ul>
+</li>
+</ul>
+</li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#run-the-separate-text-function-to-isolate-tokens-by-category">Run the <code class="docutils literal notranslate"><span class="pre">separate_text</span></code> function to isolate tokens by category</a><ul class="nav section-nav flex-column">
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#cache-the-result-for-next-steps">Cache the result for next steps</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#optional-preview-the-results-for-the-first-six-rows-of-the-updated-data-frame">Optional: Preview the results for the first six rows of the updated data frame</a><ul class="nav section-nav flex-column">
+<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#id5">Anthony</a></li>
+<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#id6">Catt</a></li>
+<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#id7">Stanton</a></li>
+<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#id8">Terrell</a></li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+  </nav></div>
+
+</div></div>
+              
+            
+          </div>
+          <footer class="bd-footer-content">
+            
+<div class="bd-footer-content__inner container">
+  
+  <div class="footer-item">
+    
+<p class="component-author">
+By Dave Durden and Madeline Goebel
+</p>
+
+  </div>
+  
+  <div class="footer-item">
+    
+  <p class="copyright">
+    
+      © Copyright 2022.
+      <br/>
+    
+  </p>
+
+  </div>
+  
+  <div class="footer-item">
+    
+  </div>
+  
+  <div class="footer-item">
+    
+<div class="extra_footer">
+  <header class="loc-header">
+    <div class="loc-logo">
+        <a href="https://www.loc.gov/"><img src="_static/LOC_Logo_horiz_inv.png" alt="The Library of Congress logo" title="Go to the Library of Congress homepage" /></a>
+    </div>
+    <div class="project-description">
+        <p>This Python tutorial demonstrates how to process and visualize <a href="https://crowd.loc.gov/">By the People</a> transcription data using natural language processing. <a href="https://github.com/libraryOfCongress/btp-data" class="button small">View the code</a></p>
+    </div>
+</header>
+<footer class="loc-footer">
+    <p>This Python tutorial demonstrates how to process and visualize <a href="https://crowd.loc.gov/">By the People</a> transcription data using natural language processing.</p>
+    <ul class="loc-footer-nav-list">
+        <li><a href="https://github.com/libraryOfCongress/btp-data">Source code</a></li>  
+        <li><a href="https://www.loc.gov/">The Library of Congress</a></li>
+        <li><a href="https://loc.gov/legal">Privacy Policy</a></li>
+        <li><a href="https://www.loc.gov/accessibility/">Accessibilty</a></li>
+        <li><a href="https://docs.github.com/en/site-policy/privacy-policies/github-privacy-statement">Github Privacy Statement</a></li>
+        <li><a href="https://creativecommons.org/publicdomain/zero/1.0/">License</a></li>
+        <li><a href="https://ask.loc.gov/crowd">Contact</a></li>
+    </ul>
+</footer>
+
+</div>
+  </div>
+  
+</div>
+          </footer>
+        
+
+      </main>
+    </div>
+  </div>
+  
+  <!-- Scripts loaded after <body> so the DOM is not blocked -->
+  <script src="_static/scripts/bootstrap.js?digest=ac02cc09edc035673794"></script>
+<script src="_static/scripts/pydata-sphinx-theme.js?digest=ac02cc09edc035673794"></script>
+
+  <footer class="bd-footer">
+  </footer>
+  </body>
+</html>

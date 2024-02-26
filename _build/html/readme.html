@@ -1,0 +1,591 @@
+
+
+<!DOCTYPE html>
+
+
+<html lang="en" >
+
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="generator" content="Docutils 0.18.1: http://docutils.sourceforge.net/" />
+
+    <title>Processing and Visualizing By the People Transcription Data &#8212; Processing and Visualizing By the People Transcription Data</title>
+  
+  
+  
+  <script data-cfasync="false">
+    document.documentElement.dataset.mode = localStorage.getItem("mode") || "";
+    document.documentElement.dataset.theme = localStorage.getItem("theme") || "light";
+  </script>
+  
+  <!-- Loaded before other Sphinx assets -->
+  <link href="_static/styles/theme.css?digest=ac02cc09edc035673794" rel="stylesheet" />
+<link href="_static/styles/bootstrap.css?digest=ac02cc09edc035673794" rel="stylesheet" />
+<link href="_static/styles/pydata-sphinx-theme.css?digest=ac02cc09edc035673794" rel="stylesheet" />
+
+  
+  <link href="_static/vendor/fontawesome/6.1.2/css/all.min.css?digest=ac02cc09edc035673794" rel="stylesheet" />
+  <link rel="preload" as="font" type="font/woff2" crossorigin href="_static/vendor/fontawesome/6.1.2/webfonts/fa-solid-900.woff2" />
+<link rel="preload" as="font" type="font/woff2" crossorigin href="_static/vendor/fontawesome/6.1.2/webfonts/fa-brands-400.woff2" />
+<link rel="preload" as="font" type="font/woff2" crossorigin href="_static/vendor/fontawesome/6.1.2/webfonts/fa-regular-400.woff2" />
+
+    <link rel="stylesheet" type="text/css" href="_static/pygments.css" />
+    <link rel="stylesheet" href="_static/styles/sphinx-book-theme.css?digest=14f4ca6b54d191a8c7657f6c759bf11a5fb86285" type="text/css" />
+    <link rel="stylesheet" type="text/css" href="_static/togglebutton.css" />
+    <link rel="stylesheet" type="text/css" href="_static/copybutton.css" />
+    <link rel="stylesheet" type="text/css" href="_static/mystnb.4510f1fc1dee50b3e5859aac5469c37c29e427902b24a333a5f9fcb2f0b3ac41.css" />
+    <link rel="stylesheet" type="text/css" href="_static/sphinx-thebe.css" />
+    <link rel="stylesheet" type="text/css" href="_static/loc.css" />
+    <link rel="stylesheet" type="text/css" href="_static/design-style.4045f2051d55cab465a707391d5b2007.min.css" />
+  
+  <!-- Pre-loaded scripts that we'll load fully later -->
+  <link rel="preload" as="script" href="_static/scripts/bootstrap.js?digest=ac02cc09edc035673794" />
+<link rel="preload" as="script" href="_static/scripts/pydata-sphinx-theme.js?digest=ac02cc09edc035673794" />
+  <script src="_static/vendor/fontawesome/6.1.2/js/all.min.js?digest=ac02cc09edc035673794"></script>
+
+    <script data-url_root="./" id="documentation_options" src="_static/documentation_options.js"></script>
+    <script src="_static/jquery.js"></script>
+    <script src="_static/underscore.js"></script>
+    <script src="_static/_sphinx_javascript_frameworks_compat.js"></script>
+    <script src="_static/doctools.js"></script>
+    <script src="_static/clipboard.min.js"></script>
+    <script src="_static/copybutton.js"></script>
+    <script src="_static/scripts/sphinx-book-theme.js?digest=5a5c038af52cf7bc1a1ec88eea08e6366ee68824"></script>
+    <script>let toggleHintShow = 'Click to show';</script>
+    <script>let toggleHintHide = 'Click to hide';</script>
+    <script>let toggleOpenOnPrint = 'true';</script>
+    <script src="_static/togglebutton.js"></script>
+    <script src="_static/loc.js"></script>
+    <script>var togglebuttonSelector = '.toggle, .admonition.dropdown';</script>
+    <script src="_static/design-tabs.js"></script>
+    <script>const THEBE_JS_URL = "https://unpkg.com/thebe@0.8.2/lib/index.js"
+const thebe_selector = ".thebe,.cell"
+const thebe_selector_input = "pre"
+const thebe_selector_output = ".output, .cell_output"
+</script>
+    <script async="async" src="_static/sphinx-thebe.js"></script>
+    <script>DOCUMENTATION_OPTIONS.pagename = 'readme';</script>
+    <link rel="index" title="Index" href="genindex.html" />
+    <link rel="search" title="Search" href="search.html" />
+  <meta name="viewport" content="width=device-width, initial-scale=1"/>
+  <meta name="docsearch:language" content="en"/>
+  </head>
+  
+  
+  <body data-bs-spy="scroll" data-bs-target=".bd-toc-nav" data-offset="180" data-bs-root-margin="0px 0px -60%" data-default-mode="">
+
+  
+  
+  <a class="skip-link" href="#main-content">Skip to main content</a>
+  
+  <div id="pst-scroll-pixel-helper"></div>
+
+  
+  <button type="button" class="btn rounded-pill" id="pst-back-to-top">
+    <i class="fa-solid fa-arrow-up"></i>
+    Back to top
+  </button>
+
+  
+  <input type="checkbox"
+          class="sidebar-toggle"
+          name="__primary"
+          id="__primary"/>
+  <label class="overlay overlay-primary" for="__primary"></label>
+  
+  <input type="checkbox"
+          class="sidebar-toggle"
+          name="__secondary"
+          id="__secondary"/>
+  <label class="overlay overlay-secondary" for="__secondary"></label>
+  
+  <div class="search-button__wrapper">
+    <div class="search-button__overlay"></div>
+    <div class="search-button__search-container">
+<form class="bd-search d-flex align-items-center"
+      action="search.html"
+      method="get">
+  <i class="fa-solid fa-magnifying-glass"></i>
+  <input type="search"
+         class="form-control"
+         name="q"
+         id="search-input"
+         placeholder="Search this book..."
+         aria-label="Search this book..."
+         autocomplete="off"
+         autocorrect="off"
+         autocapitalize="off"
+         spellcheck="false"/>
+  <span class="search-button__kbd-shortcut"><kbd class="kbd-shortcut__modifier">Ctrl</kbd>+<kbd>K</kbd></span>
+</form></div>
+  </div>
+  
+    <nav class="bd-header navbar navbar-expand-lg bd-navbar">
+    </nav>
+  
+  <div class="bd-container">
+    <div class="bd-container__inner bd-page-width">
+      
+      <div class="bd-sidebar-primary bd-sidebar">
+        
+
+  
+  <div class="sidebar-header-items sidebar-primary__section">
+    
+    
+    
+    
+  </div>
+  
+    <div class="sidebar-primary-items__start sidebar-primary__section">
+        <div class="sidebar-primary-item">
+  
+
+<a class="navbar-brand logo" href="01_introduction.html">
+  
+  
+  
+  
+  
+    <p class="title logo__title">Processing and Visualizing By the People Transcription Data</p>
+  
+</a></div>
+        <div class="sidebar-primary-item"><nav class="bd-links" id="bd-docs-nav" aria-label="Main">
+    <div class="bd-toc-item navbar-nav active">
+        
+        <ul class="nav bd-sidenav bd-sidenav__home-link">
+            <li class="toctree-l1">
+                <a class="reference internal" href="01_introduction.html">
+                    Introduction
+                </a>
+            </li>
+        </ul>
+        <ul class="nav bd-sidenav">
+<li class="toctree-l1"><a class="reference internal" href="02_definitions.html">Imports, definitions, and data</a></li>
+<li class="toctree-l1"><a class="reference internal" href="03_tokenization.html">Text tokenization</a></li>
+<li class="toctree-l1"><a class="reference internal" href="04_processing.html">Data Processing</a></li>
+<li class="toctree-l1"><a class="reference internal" href="05_visualization.html">Visualizing the data</a></li>
+</ul>
+
+    </div>
+</nav></div>
+    </div>
+  
+  
+  <div class="sidebar-primary-items__end sidebar-primary__section">
+  </div>
+  
+  <div id="rtd-footer-container"></div>
+
+
+      </div>
+      
+      <main id="main-content" class="bd-main">
+        
+        
+
+<div class="sbt-scroll-pixel-helper"></div>
+
+          <div class="bd-content">
+            <div class="bd-article-container">
+              
+              <div class="bd-header-article">
+<div class="header-article-items header-article__inner">
+  
+    <div class="header-article-items__start">
+      
+        <div class="header-article-item"><label class="sidebar-toggle primary-toggle btn btn-sm" for="__primary" title="Toggle primary sidebar" data-bs-placement="bottom" data-bs-toggle="tooltip">
+  <span class="fa-solid fa-bars"></span>
+</label></div>
+      
+    </div>
+  
+  
+    <div class="header-article-items__end">
+      
+        <div class="header-article-item">
+
+<div class="article-header-buttons">
+
+
+
+
+
+<div class="dropdown dropdown-download-buttons">
+  <button class="btn dropdown-toggle" type="button" data-bs-toggle="dropdown" aria-expanded="false" aria-label="Download this page">
+    <i class="fas fa-download"></i>
+  </button>
+  <ul class="dropdown-menu">
+      
+      
+      
+      <li><a href="_sources/readme.md" target="_blank"
+   class="btn btn-sm btn-download-source-button dropdown-item"
+   title="Download source file"
+   data-bs-placement="left" data-bs-toggle="tooltip"
+>
+  
+
+<span class="btn__icon-container">
+  <i class="fas fa-file"></i>
+  </span>
+<span class="btn__text-container">.md</span>
+</a>
+</li>
+      
+      
+      
+      
+      <li>
+<button onclick="window.print()"
+  class="btn btn-sm btn-download-pdf-button dropdown-item"
+  title="Print to PDF"
+  data-bs-placement="left" data-bs-toggle="tooltip"
+>
+  
+
+<span class="btn__icon-container">
+  <i class="fas fa-file-pdf"></i>
+  </span>
+<span class="btn__text-container">.pdf</span>
+</button>
+</li>
+      
+  </ul>
+</div>
+
+
+
+
+<button onclick="toggleFullScreen()"
+  class="btn btn-sm btn-fullscreen-button"
+  title="Fullscreen mode"
+  data-bs-placement="bottom" data-bs-toggle="tooltip"
+>
+  
+
+<span class="btn__icon-container">
+  <i class="fas fa-expand"></i>
+  </span>
+
+</button>
+
+
+<script>
+document.write(`
+  <button class="btn btn-sm navbar-btn theme-switch-button" title="light/dark" aria-label="light/dark" data-bs-placement="bottom" data-bs-toggle="tooltip">
+    <span class="theme-switch nav-link" data-mode="light"><i class="fa-solid fa-sun fa-lg"></i></span>
+    <span class="theme-switch nav-link" data-mode="dark"><i class="fa-solid fa-moon fa-lg"></i></span>
+    <span class="theme-switch nav-link" data-mode="auto"><i class="fa-solid fa-circle-half-stroke fa-lg"></i></span>
+  </button>
+`);
+</script>
+
+<script>
+document.write(`
+  <button class="btn btn-sm navbar-btn search-button search-button__button" title="Search" aria-label="Search" data-bs-placement="bottom" data-bs-toggle="tooltip">
+    <i class="fa-solid fa-magnifying-glass fa-lg"></i>
+  </button>
+`);
+</script>
+<label class="sidebar-toggle secondary-toggle btn btn-sm" for="__secondary"title="Toggle secondary sidebar" data-bs-placement="bottom" data-bs-toggle="tooltip">
+    <span class="fa-solid fa-list"></span>
+</label>
+</div></div>
+      
+    </div>
+  
+</div>
+</div>
+              
+              
+
+<div id="jb-print-docs-body" class="onlyprint">
+    <h1>Processing and Visualizing By the People Transcription Data</h1>
+    <!-- Table of contents -->
+    <div id="print-main-content">
+        <div id="jb-print-toc">
+            
+            <div>
+                <h2> Contents </h2>
+            </div>
+            <nav aria-label="Page">
+                <ul class="visible nav section-nav flex-column">
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#about-the-data">About the data</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#about-the-notebooks">About the notebooks</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#running-the-notebooks">Running the notebooks</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#prerequisites-dependencies-and-jupyter-commands">Prerequisites, dependencies, and jupyter commands</a><ul class="nav section-nav flex-column">
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#prerequisites">Prerequisites</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#dependencies">Dependencies</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#starting-a-jupyter-session">Starting a Jupyter session</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#create-an-empty-notebook">Create an empty notebook</a></li>
+</ul>
+</li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#authorship-and-use">Authorship and use</a></li>
+</ul>
+            </nav>
+        </div>
+    </div>
+</div>
+
+              
+                
+<div id="searchbox"></div>
+                <article class="bd-article" role="main">
+                  
+  <section class="tex2jax_ignore mathjax_ignore" id="processing-and-visualizing-by-the-people-transcription-data">
+<h1>Processing and Visualizing By the People Transcription Data<a class="headerlink" href="#processing-and-visualizing-by-the-people-transcription-data" title="Permalink to this heading">#</a></h1>
+<hr class="docutils" />
+<section id="about-the-data">
+<h2>About the data<a class="headerlink" href="#about-the-data" title="Permalink to this heading">#</a></h2>
+<p>This tutorial provides an example of data processing and visualization using transcription data from By the People, the Library of Congress’s crowdsourced transcriptioning program. By the People invites anyone to contribute to the Library of Congress as a virtual volunteer by transcribing and reviewing digital images of texts to enhance Library of Congress digital collections. The Library of Congress thanks all By the People volunteers for sharing their time and knowledge with us to make this tutorial possible.</p>
+<p>By the People transcriptions and tags are created by anonymous and registered volunteers. Once a transcription is finished, it must be reviewed by a registered volunteer. A transcription may undergo multiple rounds of edits before being completed. Finally, transcriptions are spot-checked by Library of Congress subject matter experts before they are incorporated into the digital collections on the Library’s website to enhance search and accessibility. Transcriptions are also packaged into .csv files and made available as datasets as part of the <a class="reference external" href="https://www.loc.gov/collections/selected-datasets/">Selected Datasets Collection</a>.</p>
+<p>In this tutorial we will work with four datasets related to the movement for women’s suffrage in the United States. Each dataset’s README includes additional information about its content and creation</p>
+<ul class="simple">
+<li><p>Anthony, Susan B. Transcription datasets from Susan B. Anthony Papers, Manuscript Division. compiled by By The People. Washington, D.C.: By the People, Library of Congress, to 2022, 2021. Software, E-Resource. <a class="reference external" href="https://www.loc.gov/item/2020445591/">https://www.loc.gov/item/2020445591/</a>.</p></li>
+<li><p>Catt, Carrie Chapman. Transcription datasets from Carrie Chapman Catt Papers, Manuscript Division. compiled by By The People. Washington, D.C.: By the People, Library of Congress, to 2022, 2020. Software, E-Resource. <a class="reference external" href="https://www.loc.gov/item/2019667239/">https://www.loc.gov/item/2019667239/</a>.</p></li>
+<li><p>Stanton, Elizabeth Cady. Transcription datasets from Elizabeth Cady Stanton Papers, Manuscript Division. compiled by By The People. Washington, D.C.: By the People, Library of Congress, 2021. Software, E-Resource. <a class="reference external" href="https://www.loc.gov/item/2020445592/">https://www.loc.gov/item/2020445592/</a>.</p></li>
+<li><p>Terrell, Mary Church. Transcription dataset from the Mary Church Terrell Papers, Manuscript Division. compiled by By The People. Washington, D.C.: By the People, Library of Congress, to 2021, 2018. Software, E-Resource. <a class="reference external" href="https://www.loc.gov/item/2021387726/">https://www.loc.gov/item/2021387726/</a>.</p></li>
+</ul>
+<p>Transcription volunteers are instructed to transcribe the text as written, including misspellings and abbreviations. Formatting is generally not preserved with the exception of line breaks. Minimal markup does include “?” for illegible or unclear text, square brackets around deleted text, and square brackets and asterisks around marginalia <code class="docutils literal notranslate"><span class="pre">([*example*])</span></code>. Pages without text are marked “nothing to transcribe” and do not have transcriptions in <a class="reference external" href="https://www.loc.gov/">loc.gov</a>.</p>
+<p>By the People datasets contain the following fields:</p>
+<ul class="simple">
+<li><p>Campaign – this is the highest hierarchical level in the arrangement of collections on By the People (example: <a class="reference external" href="https://crowd.loc.gov/campaigns/susan-b-anthony-papers/">Susan B. Anthony Papers</a>). This field displays the campaign’s title.</p></li>
+<li><p>Project – this is the second-highest hierarchical level of collections on By the People. Projects may map to an existing subset of a digital collection, such as an archival series, or may be a grouping of related items uniquely organized for By the People. This field displays the project’s title.</p></li>
+<li><p>Item – this is the third-highest hierarchical level of collections on By the People, typically representing a folder, letter, document, or diary. This field displays the item title.</p></li>
+<li><p>ItemId – this is the identifier for the item (see above for definition). This numerical identifier is consistent across the By the People website and in <a class="reference external" href="http://loc.gov">loc.gov</a>. The item and metadata are usually located on the Library’s website at <code class="docutils literal notranslate"><span class="pre">https://www.loc.gov/item/[ItemID]/</span></code></p></li>
+<li><p>Asset – this is the identifier for the individual asset image. It is also referred to colloquially as the “page” by By the People volunteers and Community Managers. This identifier is used in the By the People site and on <a class="reference external" href="http://loc.gov">loc.gov</a>.</p></li>
+<li><p>AssetStatus – this indicates the status of the asset in the peer review workflow – Not Started, In Progress, Needs Review, or Completed. Dataset assets will always be marked as “Completed.”</p></li>
+<li><p>DownloadURL – this link provides access to the image file for the Asset from which the transcription was created.</p></li>
+<li><p>Transcription – this is the text created by the By the People volunteers, representing the written content of the DownloadURL image and corresponding to the Asset. This field will be blank for assets that volunteers marked “Nothing to transcribe”.</p></li>
+<li><p>Tags – these are all the tags that have been applied to the asset. If there is more than one tag, the tags are delimited by a semicolon and space.</p></li>
+</ul>
+</section>
+<hr class="docutils" />
+<section id="about-the-notebooks">
+<h2>About the notebooks<a class="headerlink" href="#about-the-notebooks" title="Permalink to this heading">#</a></h2>
+<p>This tutorial first cleans and processes transcriptions from the four datasets using <a class="reference external" href="https://pandas.pydata.org/">Pandas</a> and the <a class="reference external" href="https://spacy.io/">spaCy</a> Natural Language Processing library. This code tokenizes the transcriptions, breaking the strings of text into tokens (words) that will be further analyzed. It then identifies the lemma, or root, for each word. For example, the lemma of “voted” is “vote”, and the lemma of “women” is “woman”. The code next iterates over each token to produce a list of lemmas from the original transcriptions that excludes stop words, punctuation, numbers, and words that volunteers were unable to fully transcribe, which are designated with “?”. Stop words are commonly used words, such as “the”, “a”, or “is”.</p>
+<p>The tutorial then creates two visualizations from the cleaned data using the <a class="reference external" href="https://matplotlib.org/">Matplotlib</a> and <a class="reference external" href="https://numpy.org/">Numpy</a> Python libraries. The first is a combined bar graph showing the five most used words for each of the four datasets. The second is a focused look at the “Speeches” series from the Susan B. Anthony Papers. With data coming from a <a class="reference external" href="http://hdl.loc.gov/loc.mss/ms997009.mss11049.036">typed inventory of speeches</a> found in the collection, this code groups Anthony’s speeches by year, and then plots the usage of the top five words in her speeches by year.</p>
+</section>
+<hr class="docutils" />
+<section id="running-the-notebooks">
+<h2>Running the notebooks<a class="headerlink" href="#running-the-notebooks" title="Permalink to this heading">#</a></h2>
+<p>In order to run a Jupyter notebook, navigate to the directory that contains the notebook files using <code class="docutils literal notranslate"><span class="pre">cd</span> <span class="pre">/path/to/dcm-btp-notebooks</span></code>, then run the command <code class="docutils literal notranslate"><span class="pre">jupyter</span> <span class="pre">notebook</span></code>. This will launch the Notebook Dashboard in an Internet browser.</p>
+<p>In order to properly run these notebooks, make sure that the appropriate Python libraries are installed. The dataset files are already included in this tutorial in the <code class="docutils literal notranslate"><span class="pre">data</span></code> directory (along with each dataset’s README), which can be seen in the Notebook Dashboard.</p>
+<p>An entire notebook can be run by clicking <code class="docutils literal notranslate"><span class="pre">Run</span></code> in the menu bar. Individual cells can be run by clicking into the cell, then hitting <code class="docutils literal notranslate"><span class="pre">Shift</span> <span class="pre">+</span> <span class="pre">Enter</span></code>. The notebooks in this tutorial must be run in order, from 2 to 5.</p>
+<p>These notebooks contain optional code that can be run to print results to the notebook. This helps show what the code is doing at each step. These cells have “Optional:” in the title. Add <code class="docutils literal notranslate"><span class="pre">#</span></code> to the beginning of a line of code to comment out the lines you do not want to run.</p>
+<p>The outputs from <code class="docutils literal notranslate"><span class="pre">Data-Processing</span></code> will be saved to the <code class="docutils literal notranslate"><span class="pre">outputs</span></code> directory, which can be seen in the Notebook Dashboard.</p>
+</section>
+<hr class="docutils" />
+<section id="prerequisites-dependencies-and-jupyter-commands">
+<h2>Prerequisites, dependencies, and jupyter commands<a class="headerlink" href="#prerequisites-dependencies-and-jupyter-commands" title="Permalink to this heading">#</a></h2>
+<p>This repo contains Jupyter Notebooks and therefore requires <code class="docutils literal notranslate"><span class="pre">jupyter</span></code> to be installed before launching a Jupyter session.</p>
+<section id="prerequisites">
+<h3>Prerequisites<a class="headerlink" href="#prerequisites" title="Permalink to this heading">#</a></h3>
+<ol class="arabic simple">
+<li><p>If you are using Anaconda Python, <code class="docutils literal notranslate"><span class="pre">jupyter</span></code> should already be installed.</p></li>
+<li><p>If you are using a different Python distribution, install <code class="docutils literal notranslate"><span class="pre">jupyter</span></code> with the following <code class="docutils literal notranslate"><span class="pre">pip</span></code> command:</p></li>
+</ol>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">pip</span> <span class="n">install</span> <span class="n">notebook</span>
+</pre></div>
+</div>
+</section>
+<section id="dependencies">
+<h3>Dependencies<a class="headerlink" href="#dependencies" title="Permalink to this heading">#</a></h3>
+<ol class="arabic simple">
+<li><p>The following libraries are required:</p></li>
+</ol>
+<ul class="simple">
+<li><p><code class="docutils literal notranslate"><span class="pre">pandas</span></code> *Anaconda Default</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">re</span></code> *Python Standard Library</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">ast</span></code> *Python Standard Library</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">matplotlib</span></code> *Anaconda Default</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">numpy</span></code> *Anaconda Default</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">collections</span></code> *Python Standard Library</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">operator</span></code> *Python Standard Library</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">spacy</span></code></p></li>
+</ul>
+<ol class="arabic simple" start="2">
+<li><p>If you are using Anaconda Python, all libraries except for <code class="docutils literal notranslate"><span class="pre">spacy</span></code> should already be installed. Install <code class="docutils literal notranslate"><span class="pre">spacy</span></code> using the following:</p></li>
+</ol>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">pip</span> <span class="n">install</span> <span class="o">-</span><span class="n">U</span> <span class="n">pip</span> <span class="n">setuptools</span> <span class="n">wheel</span>
+<span class="n">pip</span> <span class="n">install</span> <span class="o">-</span><span class="n">U</span> <span class="n">spacy</span>
+<span class="n">python</span> <span class="o">-</span><span class="n">m</span> <span class="n">spacy</span> <span class="n">download</span> <span class="n">en_core_web_lg</span>
+</pre></div>
+</div>
+<blockquote>
+<div><p>Note: Do not use <code class="docutils literal notranslate"><span class="pre">pip</span> <span class="pre">install</span> <span class="pre">--user</span></code> with Anaconda.</p>
+</div></blockquote>
+<ol class="arabic simple" start="3">
+<li><p>For other Python installations, you will need to install <code class="docutils literal notranslate"><span class="pre">pandas</span></code>, <code class="docutils literal notranslate"><span class="pre">matplotlib</span></code>, and <code class="docutils literal notranslate"><span class="pre">numpy</span></code>, unless you have previously installed these. You can install them with:</p></li>
+</ol>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">pip</span> <span class="n">install</span> <span class="n">pandas</span> <span class="n">matplotlib</span> <span class="n">numpy</span>
+</pre></div>
+</div>
+<p>Then, install <code class="docutils literal notranslate"><span class="pre">spacy</span></code>:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">pip</span> <span class="n">install</span> <span class="o">-</span><span class="n">U</span> <span class="n">pip</span> <span class="n">setuptools</span> <span class="n">wheel</span>
+<span class="n">pip</span> <span class="n">install</span> <span class="o">-</span><span class="n">U</span> <span class="n">spacy</span>
+<span class="n">python</span> <span class="o">-</span><span class="n">m</span> <span class="n">spacy</span> <span class="n">download</span> <span class="n">en_core_web_lg</span>
+</pre></div>
+</div>
+</section>
+<section id="starting-a-jupyter-session">
+<h3>Starting a Jupyter session<a class="headerlink" href="#starting-a-jupyter-session" title="Permalink to this heading">#</a></h3>
+<ol class="arabic simple">
+<li><p>Launch an Anaconda Prompt (or whatever shell you use to run Python)</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">cd</span></code> into the <code class="docutils literal notranslate"><span class="pre">dcm-btp-notebooks</span></code> directory</p></li>
+<li><p>Run the command <code class="docutils literal notranslate"><span class="pre">jupyter</span> <span class="pre">notebook</span></code></p></li>
+<li><p>A new tab should open in your browser listing the contents of the <code class="docutils literal notranslate"><span class="pre">dcm-btp-notebooks</span></code> directory</p></li>
+</ol>
+</section>
+<section id="create-an-empty-notebook">
+<h3>Create an empty notebook<a class="headerlink" href="#create-an-empty-notebook" title="Permalink to this heading">#</a></h3>
+<ol class="arabic simple">
+<li><p>Once a Jupyter session is running, use the <code class="docutils literal notranslate"><span class="pre">New</span></code> drop-down and select <code class="docutils literal notranslate"><span class="pre">Python</span> <span class="pre">3</span></code></p></li>
+<li><p>Give the notebook a name</p></li>
+<li><p>Open the <code class="docutils literal notranslate"><span class="pre">file</span></code> menu and choose <code class="docutils literal notranslate"><span class="pre">Save</span> <span class="pre">and</span> <span class="pre">Checkpoint</span></code></p></li>
+<li><p>Start adding content!</p></li>
+</ol>
+</section>
+</section>
+<section id="authorship-and-use">
+<h2>Authorship and use<a class="headerlink" href="#authorship-and-use" title="Permalink to this heading">#</a></h2>
+<p>These notebooks were created by Dave Durden and Madeline Goebel, Digital Collection Specialists at the Library of Congress. They are marked with a <a class="reference external" href="https://creativecommons.org/publicdomain/zero/1.0/">CC0 1.0 Universal</a> public domain dedication.</p>
+<p>All contributions to the By the People application are released into the public domain as they are created. Anyone can use and re-use the datasets in any way they want.</p>
+<hr class="docutils" />
+<p xmlns:cc="http://creativecommons.org/ns#" xmlns:dct="http://purl.org/dc/terms/"><a property="dct:title" rel="cc:attributionURL" href="https://github.com/LibraryOfCongress/btp-data/">Processing and Visualizing By the People Transcription Data</a> by <span property="cc:attributionName">David Durden and Madeline Goebel</span> is marked with <a href="http://creativecommons.org/publicdomain/zero/1.0?ref=chooser-v1" target="_blank" rel="license noopener noreferrer" style="display:inline-block;">CC0 1.0<img style="height:22px!important;margin-left:3px;vertical-align:text-bottom;" src="https://mirrors.creativecommons.org/presskit/icons/cc.svg?ref=chooser-v1"><img style="height:22px!important;margin-left:3px;vertical-align:text-bottom;" src="https://mirrors.creativecommons.org/presskit/icons/zero.svg?ref=chooser-v1"></a></p></section>
+</section>
+
+    <script type="text/x-thebe-config">
+    {
+        requestKernel: true,
+        binderOptions: {
+            repo: "binder-examples/jupyter-stacks-datascience",
+            ref: "master",
+        },
+        codeMirrorConfig: {
+            theme: "abcdef",
+            mode: "python"
+        },
+        kernelOptions: {
+            name: "python3",
+            path: "./."
+        },
+        predefinedOutput: true
+    }
+    </script>
+    <script>kernelName = 'python3'</script>
+
+                </article>
+              
+
+              
+              
+              
+              
+                <footer class="prev-next-footer">
+                  <!-- Previous / next buttons -->
+<div class="prev-next-area">
+</div>
+                </footer>
+              
+            </div>
+            
+            
+              
+                <div class="bd-sidebar-secondary bd-toc"><div class="sidebar-secondary-items sidebar-secondary__inner">
+
+  <div class="sidebar-secondary-item">
+  <div class="page-toc tocsection onthispage">
+    <i class="fa-solid fa-list"></i> Contents
+  </div>
+  <nav class="bd-toc-nav page-toc">
+    <ul class="visible nav section-nav flex-column">
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#about-the-data">About the data</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#about-the-notebooks">About the notebooks</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#running-the-notebooks">Running the notebooks</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#prerequisites-dependencies-and-jupyter-commands">Prerequisites, dependencies, and jupyter commands</a><ul class="nav section-nav flex-column">
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#prerequisites">Prerequisites</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#dependencies">Dependencies</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#starting-a-jupyter-session">Starting a Jupyter session</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#create-an-empty-notebook">Create an empty notebook</a></li>
+</ul>
+</li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#authorship-and-use">Authorship and use</a></li>
+</ul>
+  </nav></div>
+
+</div></div>
+              
+            
+          </div>
+          <footer class="bd-footer-content">
+            
+<div class="bd-footer-content__inner container">
+  
+  <div class="footer-item">
+    
+<p class="component-author">
+By Dave Durden and Madeline Goebel
+</p>
+
+  </div>
+  
+  <div class="footer-item">
+    
+  <p class="copyright">
+    
+      © Copyright 2022.
+      <br/>
+    
+  </p>
+
+  </div>
+  
+  <div class="footer-item">
+    
+  </div>
+  
+  <div class="footer-item">
+    
+<div class="extra_footer">
+  <header class="loc-header">
+    <div class="loc-logo">
+        <a href="https://www.loc.gov/"><img src="_static/LOC_Logo_horiz_inv.png" alt="The Library of Congress logo" title="Go to the Library of Congress homepage" /></a>
+    </div>
+    <div class="project-description">
+        <p>This Python tutorial demonstrates how to process and visualize <a href="https://crowd.loc.gov/">By the People</a> transcription data using natural language processing. <a href="https://github.com/libraryOfCongress/btp-data" class="button small">View the code</a></p>
+    </div>
+</header>
+<footer class="loc-footer">
+    <p>This Python tutorial demonstrates how to process and visualize <a href="https://crowd.loc.gov/">By the People</a> transcription data using natural language processing.</p>
+    <ul class="loc-footer-nav-list">
+        <li><a href="https://github.com/libraryOfCongress/btp-data">Source code</a></li>  
+        <li><a href="https://www.loc.gov/">The Library of Congress</a></li>
+        <li><a href="https://loc.gov/legal">Privacy Policy</a></li>
+        <li><a href="https://www.loc.gov/accessibility/">Accessibilty</a></li>
+        <li><a href="https://docs.github.com/en/site-policy/privacy-policies/github-privacy-statement">Github Privacy Statement</a></li>
+        <li><a href="https://creativecommons.org/publicdomain/zero/1.0/">License</a></li>
+        <li><a href="https://ask.loc.gov/crowd">Contact</a></li>
+    </ul>
+</footer>
+
+</div>
+  </div>
+  
+</div>
+          </footer>
+        
+
+      </main>
+    </div>
+  </div>
+  
+  <!-- Scripts loaded after <body> so the DOM is not blocked -->
+  <script src="_static/scripts/bootstrap.js?digest=ac02cc09edc035673794"></script>
+<script src="_static/scripts/pydata-sphinx-theme.js?digest=ac02cc09edc035673794"></script>
+
+  <footer class="bd-footer">
+  </footer>
+  </body>
+</html>

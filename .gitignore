@@ -19,7 +19,8 @@ venv.bak/
 **/*.ipynb_checkpoints/
 .ipynb_checkpoints
 */.ipynb_checkpoints/*
-_build/
+_build/.doctrees/*
+_build/jupyter_execute/*
 
 # Cached data
 outputs/*.pkl
