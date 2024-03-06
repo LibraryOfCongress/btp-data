@@ -59,13 +59,29 @@ nav.bd-links li > a:hover,
     padding-top: 40px;
 }
 
-.cell_output .output.stderr,
+/* .cell_output .output.stderr,
 .cell_output .output.traceback {
     display: none;
-}
+} */
 
 div.cell_output table {
     font-size: 0.8em;
+}
+
+/* input.sidebar-toggle {
+    display: block;
+    clip: rect(0 0 0 0);
+    clip-path: inset(50%);
+    height: 1px;
+    overflow: hidden;
+    position: absolute;
+    white-space: nowrap;
+    width: 1px;
+    z-index: -1;
+} */
+label.sidebar-toggle:focus-visible,
+label.sidebar-toggle:focus {
+    outline: 2px solid var(--pst-color-accent);
 }
 
 .loc-header {

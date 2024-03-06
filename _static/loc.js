@@ -93,6 +93,48 @@ function locMain() {
             }
         });
     }
+
+    // Make sidebar toggles focus-able
+    const sidebarToggles = document.querySelectorAll('label.sidebar-toggle');
+    if (sidebarToggles) {
+        sidebarToggles.forEach((toggle) => {
+            toggle.setAttribute('tabindex', 0);
+            // trigger click on enter
+            toggle.addEventListener('keyup', event => {
+                if(event.key !== 'Enter') return;
+                toggle.click();
+                toggle.focus();
+                event.preventDefault();
+            });
+        });
+    }
+
+    // Make tables accessible
+    const dataTables = document.querySelectorAll('table.dataframe');
+    if (dataTables) {
+        dataTables.forEach((table) => {
+            const ths = table.querySelectorAll('thead th');
+            ths.forEach((th) => {
+              const text = th.innerText.trim();
+               // Put content in empty table heading
+              if (text.length === 0) {
+                th.innerText = '#';
+              }
+              // Set heading scope
+              th.setAttribute('scope', 'col');
+            });
+
+            // Attempt to add title to table based on the first element in the section (should be a heading)
+            const section = table.closest('section');
+            const sectionId = section.getAttribute('id');
+            if (sectionId && sectionId !== '') {
+                const headingId = `${sectionId}-heading`;
+                const sectionHeading = section.querySelector('h1, h2, h3, h4, h5, h6');
+                sectionHeading.setAttribute('id', headingId);
+                table.setAttribute('aria-describedby', headingId);
+            }
+        });
+    }
 }
 
 document.addEventListener('DOMContentLoaded', (event) => {
