@@ -315,9 +315,9 @@ document.write(`
 <li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#about-the-data">About the data</a></li>
 <li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#about-the-notebooks">About the notebooks</a></li>
 <li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#running-the-notebooks">Running the notebooks</a></li>
-<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#authorship-and-use">Authorship and use</a></li>
 <li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#data-processing">Data processing</a></li>
 <li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#instructions-for-running-the-code">Instructions for running the code</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#authorship-and-use">Authorship and use</a></li>
 </ul>
             </nav>
         </div>
@@ -331,17 +331,19 @@ document.write(`
                   
   <section class="tex2jax_ignore mathjax_ignore" id="introduction">
 <h1>Introduction<a class="headerlink" href="#introduction" title="Permalink to this heading">#</a></h1>
+<p>This tutorial provides an example of data processing and visualization using transcription data from <a class="reference external" href="https://crowd.loc.gov/">By the People</a>, the Library of Congress’s crowdsourced transcription program. The code, shared in Jupyter notebooks, first cleans and processes transcriptions from four By the People datasets. It then creates two visualizations from the data. By the People datasets all have the same structure, so the code in this tutorial can be modified to process and visualize additional By the People datasets.</p>
 <section id="about-the-data">
 <h2>About the data<a class="headerlink" href="#about-the-data" title="Permalink to this heading">#</a></h2>
-<p>This tutorial provides an example of data processing and visualization using transcription data from By the People, the Library of Congress’s crowdsourced transcriptioning program. By the People invites anyone to contribute to the Library of Congress as a virtual volunteer by transcribing and reviewing digital images of texts to enhance Library of Congress digital collections. The Library of Congress thanks all By the People volunteers for sharing their time and knowledge with us to make this tutorial possible.</p>
-<p>By the People transcriptions and tags are created by anonymous and registered volunteers. Once a transcription is finished, it must be reviewed by a registered volunteer. A transcription may undergo multiple rounds of edits before being completed. Finally, transcriptions are spot-checked by Library of Congress subject matter experts before they are incorporated into the digital collections on the Library’s website to enhance search and accessibility. Transcriptions are also packaged into .csv files and made available as datasets as part of the <a class="reference external" href="https://www.loc.gov/collections/selected-datasets/">Selected Datasets Collection</a>.</p>
-<p>In this tutorial we will work with four datasets related to the movement for women’s suffrage in the United States. Each dataset’s README includes additional information about its content and creation</p>
+<p>By the People invites anyone to contribute to the Library of Congress as a virtual volunteer by transcribing and reviewing digitized historical documents to enhance Library of Congress digital collections. The Library of Congress thanks all By the People volunteers for sharing their time and knowledge with us to make this tutorial possible.</p>
+<p>By the People transcriptions and tags are created by anonymous and registered volunteers. Once a transcription is finished, it must be reviewed by a registered volunteer. A transcription may undergo multiple rounds of edits before being completed. Finally, transcriptions are spot-checked by Library of Congress subject matter experts before they are incorporated into the digital collections on the Library’s website (<a class="reference external" href="http://loc.gov">loc.gov</a>) to enhance search and accessibility. Transcriptions are also packaged into .csv files and made available as datasets as part of the <a class="reference external" href="https://www.loc.gov/collections/selected-datasets/">Selected Datasets Collection</a>.</p>
+<p>In this tutorial we will work with four datasets related to the movement for women’s suffrage in the United States:</p>
 <ul class="simple">
-<li><p>Anthony, Susan B. Transcription datasets from Susan B. Anthony Papers, Manuscript Division. compiled by By The People. Washington, D.C.: By the People, Library of Congress, to 2022, 2021. Software, E-Resource. <a class="reference external" href="https://www.loc.gov/item/2020445591/">https://www.loc.gov/item/2020445591/</a>.</p></li>
-<li><p>Catt, Carrie Chapman. Transcription datasets from Carrie Chapman Catt Papers, Manuscript Division. compiled by By The People. Washington, D.C.: By the People, Library of Congress, to 2022, 2020. Software, E-Resource. <a class="reference external" href="https://www.loc.gov/item/2019667239/">https://www.loc.gov/item/2019667239/</a>.</p></li>
-<li><p>Stanton, Elizabeth Cady. Transcription datasets from Elizabeth Cady Stanton Papers, Manuscript Division. compiled by By The People. Washington, D.C.: By the People, Library of Congress, 2021. Software, E-Resource. <a class="reference external" href="https://www.loc.gov/item/2020445592/">https://www.loc.gov/item/2020445592/</a>.</p></li>
-<li><p>Terrell, Mary Church. Transcription dataset from the Mary Church Terrell Papers, Manuscript Division. compiled by By The People. Washington, D.C.: By the People, Library of Congress, to 2021, 2018. Software, E-Resource. <a class="reference external" href="https://www.loc.gov/item/2021387726/">https://www.loc.gov/item/2021387726/</a>.</p></li>
+<li><p><a class="reference external" href="https://www.loc.gov/item/2020445591/">Transcription datasets from Susan B. Anthony Papers</a></p></li>
+<li><p><a class="reference external" href="https://www.loc.gov/item/2019667239/">Transcription datasets from Carrie Chapman Catt Papers</a></p></li>
+<li><p><a class="reference external" href="https://www.loc.gov/item/2020445592/">Transcription datasets from Elizabeth Cady Stanton Papers</a></p></li>
+<li><p><a class="reference external" href="https://www.loc.gov/item/2021387726/">Transcription dataset from the Mary Church Terrell Papers</a></p></li>
 </ul>
+<p>Each dataset’s README includes additional information about its content and creation.</p>
 <p>Transcription volunteers are instructed to transcribe the text as written, including misspellings and abbreviations. Formatting is generally not preserved with the exception of line breaks. Minimal markup does include “?” for illegible or unclear text, square brackets around deleted text, and square brackets and asterisks around marginalia <code class="docutils literal notranslate"><span class="pre">([*example*])</span></code>. Pages without text are marked “nothing to transcribe” and do not have transcriptions in <a class="reference external" href="https://www.loc.gov/">loc.gov</a>.</p>
 <p>By the People datasets contain the following fields:</p>
 <ul class="simple">
@@ -358,9 +360,8 @@ document.write(`
 </section>
 <section id="about-the-notebooks">
 <h2>About the notebooks<a class="headerlink" href="#about-the-notebooks" title="Permalink to this heading">#</a></h2>
-<p>This tutorial first cleans and processes transcriptions from the four datasets using <a class="reference external" href="https://pandas.pydata.org/">Pandas</a> and the <a class="reference external" href="https://spacy.io/">spaCy</a> Natural Language Processing library. This code tokenizes the transcriptions, breaking the strings of text into tokens (words) that will be further analyzed. It then identifies the lemma, or root, for each word. For example, the lemma of “voted” is “vote”, and the lemma of “women” is “woman”. The code next iterates over each token to produce a list of lemmas from the original transcriptions that excludes stop words, punctuation, numbers, and words that volunteers were unable to fully transcribe, which are designated with “?”. Stop words are commonly used words, such as “the”, “a”, or “is”.</p>
+<p>The Jupyter notebooks can be downloaded through a <a class="reference external" href="https://github.com/libraryOfCongress/btp-data">Library of Congress GitHub repository</a>. This tutorial first cleans and processes transcriptions from the four datasets using <a class="reference external" href="https://pandas.pydata.org/">Pandas</a> and the <a class="reference external" href="https://spacy.io/">spaCy</a> Natural Language Processing library. This code tokenizes the transcriptions, breaking the strings of text into tokens (words) that will be further analyzed. It then identifies the lemma, or root, for each word. For example, the lemma of “voted” is “vote”, and the lemma of “women” is “woman”. The code next iterates over each token to produce a list of lemmas from the original transcriptions that excludes stop words, punctuation, numbers, and words that volunteers were unable to fully transcribe, which are designated with “?”. Stop words are commonly used words, such as “the”, “a”, or “is”.</p>
 <p>The tutorial then creates two visualizations from the cleaned data using the <a class="reference external" href="https://matplotlib.org/">Matplotlib</a> and <a class="reference external" href="https://numpy.org/">Numpy</a> Python libraries. The first is a combined bar graph showing the five most used words for each of the four datasets. The second is a focused look at the “Speeches” series from the Susan B. Anthony Papers. With data coming from a <a class="reference external" href="http://hdl.loc.gov/loc.mss/ms997009.mss11049.036">typed inventory of speeches</a> found in the collection, this code groups Anthony’s speeches by year, and then plots the usage of the top five words in her speeches by year.</p>
-<p>The notebooks can be accessed through a <a class="reference external" href="https://github.com/libraryOfCongress/btp-data">Library of Congress GitHub repository</a>.</p>
 </section>
 <section id="running-the-notebooks">
 <h2>Running the notebooks<a class="headerlink" href="#running-the-notebooks" title="Permalink to this heading">#</a></h2>
@@ -370,20 +371,16 @@ document.write(`
 <p>These notebooks contain optional code that can be run to print results to the notebook. This helps show what the code is doing at each step. These cells have “Optional:” in the title. Add # to the beginning of a line of code to comment out the lines you do not want to run.</p>
 <p>The outputs from the tutorial will be saved to the <code class="docutils literal notranslate"><span class="pre">outputs</span></code> directory, which can be seen in the Notebook Dashboard.</p>
 </section>
-<section id="authorship-and-use">
-<h2>Authorship and use<a class="headerlink" href="#authorship-and-use" title="Permalink to this heading">#</a></h2>
-<p>These notebooks were created by Dave Durden and Madeline Goebel, Digital Collection Specialists at the Library of Congress. They are marked with a <a class="reference external" href="https://creativecommons.org/publicdomain/zero/1.0/">CC0 1.0 Universal</a> public domain dedication.</p>
-<p>All contributions to the By the People application are released into the public domain as they are created. Anyone can use and re-use the datasets in any way they want.</p>
-</section>
 <section id="data-processing">
 <h2>Data processing<a class="headerlink" href="#data-processing" title="Permalink to this heading">#</a></h2>
-<p>This notebook contains the code necessary to load and transform transcription data; it is divided into five parts:</p>
+<p>These notebooks contain the code necessary to load and transform transcription data; they are divided into the following parts:</p>
 <ol class="arabic simple">
 <li><p>Import statements, function definitions, and constants,</p></li>
 <li><p>Text tokenization for all datasets,</p></li>
 <li><p>Data processing for the transciption data,</p></li>
 <li><p>Visualization of the transcription data</p></li>
 </ol>
+<p>In <a class="reference external" href="https://libraryofcongress.github.io/btp-data/01_introduction.html">GitPages</a>, these parts are accesible in the side navigational panel.</p>
 </section>
 <section id="instructions-for-running-the-code">
 <h2>Instructions for running the code<a class="headerlink" href="#instructions-for-running-the-code" title="Permalink to this heading">#</a></h2>
@@ -391,6 +388,11 @@ document.write(`
 <li><p>Run the notebooks and cells in order.</p></li>
 <li><p>Optional code is available for previewing the data during each step of processing; these lines are not necessary for processing the data, but may be useful for those who wish to see how the data changes.</p></li>
 </ol>
+</section>
+<section id="authorship-and-use">
+<h2>Authorship and use<a class="headerlink" href="#authorship-and-use" title="Permalink to this heading">#</a></h2>
+<p>These notebooks were created by Dave Durden and Madeline Goebel, Digital Collection Specialists at the Library of Congress. They are marked with a <a class="reference external" href="https://creativecommons.org/publicdomain/zero/1.0/">CC0 1.0 Universal</a> public domain dedication.</p>
+<p>All contributions to the By the People application are released into the public domain as they are created. Anyone can use and re-use the datasets in any way they want.</p>
 </section>
 <div class="toctree-wrapper compound">
 </div>
@@ -453,9 +455,9 @@ document.write(`
 <li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#about-the-data">About the data</a></li>
 <li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#about-the-notebooks">About the notebooks</a></li>
 <li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#running-the-notebooks">Running the notebooks</a></li>
-<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#authorship-and-use">Authorship and use</a></li>
 <li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#data-processing">Data processing</a></li>
 <li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#instructions-for-running-the-code">Instructions for running the code</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#authorship-and-use">Authorship and use</a></li>
 </ul>
   </nav></div>
 
